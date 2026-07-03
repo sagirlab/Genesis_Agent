@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ritual-dapp-skills",
+  "description": "Claude Code skills and agents for building dApps on Ritual Chain",
+  "owner": {
+    "name": "Ritual Foundation",
+    "url": "https://github.com/ritual-foundation"
+  },
+  "plugins": [
+    {
+      "name": "ritual-dapp-skills",
+      "description": "Skills and agents for building dApps on Ritual Chain — smart contracts, frontend, precompiles, secrets, scheduling, streaming, agents, multimodal, X402, and more.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}
