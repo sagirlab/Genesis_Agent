@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" fill="none">
+  <rect width="900" height="360" rx="12" fill="#0A0A0A"/>
+
+  <text x="450" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#555" letter-spacing="0.2em" font-weight="500">THREE SKILL CLASSES</text>
+
+  <!-- Omega Meta -->
+  <rect x="30" y="50" width="250" height="286" rx="8" fill="none" stroke="#FFF" stroke-width="1" opacity="0.3"/>
+  <text x="155" y="72" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#FFF" letter-spacing="0.15em" font-weight="600" opacity="0.6">omega META</text>
+
+  <rect x="50" y="86" width="210" height="30" rx="5" fill="#1A1A1A" stroke="#FFF" stroke-width="0.8" opacity="0.6"/>
+  <text x="155" y="105" text-anchor="middle" font-family="monospace" font-size="9" fill="#FFF" opacity="0.8">ritual/SKILL.md</text>
+
+  <rect x="50" y="124" width="210" height="30" rx="5" fill="#1A1A1A" stroke="#FF6600" stroke-width="0.8"/>
+  <text x="155" y="143" text-anchor="middle" font-family="monospace" font-size="9" fill="#FF6600">bootstrap.md</text>
+
+  <rect x="50" y="162" width="210" height="30" rx="5" fill="#1A1A1A" stroke="#888" stroke-width="0.5"/>
+  <text x="155" y="181" text-anchor="middle" font-family="monospace" font-size="9" fill="#999">overview · precompiles</text>
+
+  <rect x="50" y="200" width="210" height="30" rx="5" fill="#1A1A1A" stroke="#888" stroke-width="0.5"/>
+  <text x="155" y="219" text-anchor="middle" font-family="monospace" font-size="9" fill="#999">elicitation · orchestrator</text>
+
+  <rect x="50" y="238" width="210" height="30" rx="5" fill="#1A1A1A" stroke="#888" stroke-width="0.5"/>
+  <text x="155" y="257" text-anchor="middle" font-family="monospace" font-size="9" fill="#999">circuit-breaker · verification</text>
+
+  <rect x="50" y="276" width="100" height="30" rx="5" fill="#1A1A1A" stroke="#FF6600" stroke-width="0.8"/>
+  <text x="100" y="295" text-anchor="middle" font-family="monospace" font-size="9" fill="#FF6600">inspiration</text>
+
+  <rect x="160" y="276" width="100" height="30" rx="5" fill="#1A1A1A" stroke="#FF6600" stroke-width="0.8"/>
+  <text x="210" y="295" text-anchor="middle" font-family="monospace" font-size="9" fill="#FF6600">projection</text>
+
+  <text x="155" y="322" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#444" font-style="italic">loaded unconditionally</text>
+
+  <!-- Alpha Build -->
+  <rect x="310" y="50" width="270" height="240" rx="8" fill="none" stroke="#BFFF00" stroke-width="1" opacity="0.3"/>
+  <text x="445" y="72" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#BFFF00" letter-spacing="0.15em" font-weight="600" opacity="0.7">alpha BUILD</text>
+
+  <g font-family="monospace" font-size="9" fill="#BFFF00" opacity="0.7">
+    <rect x="330" y="86" width="115" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="387" y="103" text-anchor="middle">contracts</text>
+    <rect x="455" y="86" width="105" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="507" y="103" text-anchor="middle">frontend</text>
+
+    <rect x="330" y="120" width="115" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="387" y="137" text-anchor="middle">backend</text>
+    <rect x="455" y="120" width="105" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="507" y="137" text-anchor="middle">design</text>
+
+    <rect x="330" y="154" width="115" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="387" y="171" text-anchor="middle">deploy</text>
+    <rect x="455" y="154" width="105" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="507" y="171" text-anchor="middle">wallet</text>
+
+    <rect x="330" y="192" width="230" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="445" y="209" text-anchor="middle">http · llm · agents · scheduler</text>
+
+    <rect x="330" y="226" width="230" height="26" rx="4" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+    <text x="445" y="243" text-anchor="middle">secrets · passkey · multimodal · x402</text>
+  </g>
+
+  <text x="445" y="275" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#444" font-style="italic">loaded conditionally -> 3-6 per project</text>
+
+  <!-- Beta Debug -->
+  <rect x="610" y="50" width="260" height="240" rx="8" fill="none" stroke="#FF3B3B" stroke-width="1" opacity="0.3"/>
+  <text x="740" y="72" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#FF3B3B" letter-spacing="0.15em" font-weight="600" opacity="0.7">beta DEBUG</text>
+
+  <g font-family="monospace" font-size="9" fill="#FF3B3B" opacity="0.7">
+    <rect x="630" y="86" width="220" height="26" rx="4" fill="#1A0F0F" stroke="#4A2A2A" stroke-width="0.5"/>
+    <text x="740" y="103" text-anchor="middle">debugger agent</text>
+
+    <rect x="630" y="120" width="220" height="26" rx="4" fill="#1A0F0F" stroke="#4A2A2A" stroke-width="0.5"/>
+    <text x="740" y="137" text-anchor="middle">triage -> quick-match</text>
+
+    <rect x="630" y="154" width="220" height="26" rx="4" fill="#1A0F0F" stroke="#4A2A2A" stroke-width="0.5"/>
+    <text x="740" y="171" text-anchor="middle">smoke tests -> diagnosis</text>
+
+    <rect x="630" y="192" width="220" height="26" rx="4" fill="#1A0F0F" stroke="#4A2A2A" stroke-width="0.5"/>
+    <text x="740" y="209" text-anchor="middle">common issues · topology</text>
+
+    <rect x="630" y="226" width="220" height="26" rx="4" fill="#1A0F0F" stroke="#4A2A2A" stroke-width="0.5"/>
+    <text x="740" y="243" text-anchor="middle">testing</text>
+  </g>
+
+  <text x="740" y="275" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#444" font-style="italic">loaded reactively on failure</text>
+
+  <!-- Arrows: Omega routes to Alpha and Beta -->
+  <line x1="260" y1="100" x2="330" y2="100" stroke="#FFF" stroke-width="0.8" opacity="0.2" stroke-dasharray="4,3"/>
+  <line x1="260" y1="100" x2="610" y2="100" stroke="#FFF" stroke-width="0.8" opacity="0.15" stroke-dasharray="4,3"/>
+  <text x="290" y="95" font-family="system-ui,sans-serif" font-size="7" fill="#555">routes</text>
+
+  <!-- Omega governs both -->
+  <line x1="260" y1="140" x2="330" y2="140" stroke="#FF6600" stroke-width="0.8" opacity="0.3" stroke-dasharray="4,3"/>
+  <line x1="260" y1="140" x2="610" y2="140" stroke="#FF6600" stroke-width="0.8" opacity="0.2" stroke-dasharray="4,3"/>
+  <text x="290" y="135" font-family="system-ui,sans-serif" font-size="7" fill="#996633">governs</text>
+
+  <!-- Footer -->
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#333">RITUAL CHAIN · 1979</text>
+</svg>

@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritual dApp Skills</title>
+<meta name="description" content="Agent skills and examples for building dApps on Ritual Chain.">
+<link rel="canonical" href="https://skills.ritualfoundation.org/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ritual dApp Skills">
+<meta property="og:title" content="Ritual dApp Skills">
+<meta property="og:description" content="Agent skills and examples for building dApps on Ritual Chain.">
+<meta property="og:url" content="https://skills.ritualfoundation.org/">
+<meta property="og:image" content="https://skills.ritualfoundation.org/skills-meta.jpg">
+<meta property="og:image:secure_url" content="https://skills.ritualfoundation.org/skills-meta.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ritual Skills preview artwork">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ritual dApp Skills">
+<meta name="twitter:description" content="Agent skills and examples for building dApps on Ritual Chain.">
+<meta name="twitter:image" content="https://skills.ritualfoundation.org/skills-meta.jpg">
+<meta name="twitter:image:alt" content="Ritual Skills preview artwork">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09090b;
+  --bg-elevated: #111113;
+  --bg-surface: #18181b;
+  --bg-hover: #1f1f23;
+  --border: #27272a;
+  --border-subtle: #1c1c1f;
+  --text: #fafaf9;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --accent: #f97316;
+  --accent-muted: #c2410c;
+  --accent-glow: rgba(249, 115, 22, 0.15);
+  --success: #22c55e;
+  --warning: #eab308;
+  --danger: #ef4444;
+  --code-bg: #0c0c0e;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow: hidden;
+  height: 100%;
+}
+.fp-wrapper { position: fixed; inset: 0; z-index: 10; }
+.fp-pin { height: 100%; width: 100%; position: relative; overflow: hidden; }
+.fp-slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 32px;
+  opacity: 0; visibility: hidden;
+  will-change: transform, opacity, filter;
+  overflow-y: auto;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.fp-slide::-webkit-scrollbar { display: none; }
+.fp-slide.active { opacity: 1; visibility: visible; }
+.fp-slide-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+.fp-counter {
+  position: absolute; bottom: 24px; right: 32px;
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--text-muted); z-index: 20;
+  opacity: 0.5;
+}
+.fp-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border-subtle);
+  z-index: 30;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+.fp-progress.hidden { opacity: 0; }
+.fp-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.45);
+  transition: width 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.8; }
+
+code, .code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--code-bg);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── Tessellation background ── */
+#tess-bg {
+  position: fixed; inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2.5s ease-out;
+}
+#tess-bg.loaded { opacity: 1; }
+#tess-bg svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  will-change: transform;
+}
+#tess-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+}
+
+@keyframes trace-loop {
+  0% { stroke-dashoffset: 1; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1; }
+}
+@keyframes trace-loop-reverse {
+  0% { stroke-dashoffset: -1; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 1; }
+}
+
+/* ── Layout ── */
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 40;
+  padding: 16px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(180deg, var(--bg) 40%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+nav .logo {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: -0.3px;
+}
+nav .nav-links { display: flex; gap: 28px; }
+nav .nav-links a {
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+nav .nav-links a:hover { color: var(--text); opacity: 1; }
+nav .logo .nav-logo-text { white-space: nowrap; }
+
+section { padding: 0 32px; max-width: 1164px; margin: 0 auto; }
+
+/* ── Immersive Hero ── */
+.im-hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative;
+  padding-top: 80px;
+  text-align: center;
+  overflow: hidden;
+}
+.im-hero-diamond {
+  width: clamp(240px, 36vw, 440px);
+  height: clamp(240px, 36vw, 440px);
+  margin-bottom: 48px;
+  filter: drop-shadow(0 0 60px rgba(249, 115, 22, 0.3))
+          drop-shadow(0 0 120px rgba(249, 115, 22, 0.1));
+}
+.im-hero-diamond path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: diamond-draw 8s cubic-bezier(0.12, 0, 0.39, 1) 0.3s forwards;
+}
+@keyframes diamond-draw {
+  0% { stroke-dashoffset: 1; opacity: 0.2; }
+  15% { stroke-dashoffset: 0.85; opacity: 0.6; }
+  40% { stroke-dashoffset: 0.5; opacity: 0.9; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+.im-hero h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700;
+  letter-spacing: -3px;
+  line-height: 1.0;
+  color: var(--text);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: hero-text-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+}
+.im-hero h1 .accent {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.im-hero .subtitle {
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--text-muted);
+  max-width: 500px;
+  margin: 0 auto 40px;
+  opacity: 0;
+  animation: hero-text-in 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+@keyframes hero-text-in {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.im-hero .cta-row {
+  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  opacity: 0;
+  animation: hero-text-in 1s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+}
+.im-hero .scroll-hint {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-muted); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  opacity: 0;
+  animation: hero-text-in 1s ease 2s forwards;
+}
+.im-hero .scroll-hint .scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+/* ── Immersive Pinned Journey ── */
+.im-journey {
+  position: relative;
+  overflow: hidden;
+}
+.im-journey-pin {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.im-step-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(24px, 5vw, 80px);
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity, filter;
+}
+.im-step-layer.active {
+  opacity: 1;
+  visibility: visible;
+}
+.im-panel-inner {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .im-panel-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+.im-progress {
+  position: absolute;
+  right: clamp(24px, 4vw, 60px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  z-index: 20;
+}
+.im-progress-track {
+  width: 2px;
+  height: 120px;
+  background: var(--border-subtle);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+.im-progress-fill {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 0%;
+  background: var(--accent);
+  border-radius: 1px;
+  transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+.im-progress-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  position: absolute;
+  top: -4px;
+  left: -3px;
+}
+.im-progress-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.im-progress-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(249,115,22,0.5);
+}
+.im-connector {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.12;
+}
+.im-step-num {
+  font-family: var(--font-mono);
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--accent) 0%, rgba(249,115,22,0.15) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+.im-step-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.im-step-desc {
+  font-size: clamp(14px, 1.6vw, 17px);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 480px;
+}
+.im-step-visual {
+  position: relative;
+}
+.im-terminal {
+  background: #0a0a0c;
+  border: 1px solid #1a1a1f;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 1px rgba(249,115,22,0.2);
+}
+.im-terminal-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 12px 16px;
+  background: #111114;
+  border-bottom: 1px solid #1a1a1f;
+}
+.im-terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+.im-terminal-dot:nth-child(1) { background: #ef4444; }
+.im-terminal-dot:nth-child(2) { background: #eab308; }
+.im-terminal-dot:nth-child(3) { background: #22c55e; }
+.im-terminal-body {
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  min-height: 140px;
+}
+.im-terminal-body .prompt { color: #22c55e; }
+.im-terminal-body .cmd { color: var(--text); }
+.im-terminal-body .str { color: var(--accent); }
+.im-terminal-body .comment { color: var(--text-muted); font-style: italic; }
+
+.im-phases {
+  display: flex; flex-direction: column; gap: 0;
+}
+.im-phase {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 20px;
+  border-left: 2px solid var(--border-subtle);
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.im-phase.active {
+  border-left-color: var(--accent);
+}
+.im-phase.active .im-phase-dot {
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.im-phase-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: all 0.4s ease;
+}
+.im-phase-name {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color 0.4s ease;
+}
+.im-phase.active .im-phase-name { color: var(--text); }
+.im-phase-check {
+  margin-left: auto;
+  color: var(--success);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+.im-phase.active .im-phase-check { opacity: 1; transform: scale(1); }
+
+/* ── Legacy hero compat ── */
+.hero { display: none; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+  color: var(--bg); opacity: 1;
+}
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-secondary:hover { border-color: var(--text-muted); color: var(--text); opacity: 1; }
+
+/* ── Quick Start ── */
+.quickstart {
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+.quickstart h2 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.quickstart .lead {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+.steps {
+  display: flex; flex-direction: column; gap: 32px;
+}
+.step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.step-num {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px;
+  background: var(--accent-glow);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.step-body h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.step-body p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+}
+.code-block .prompt { color: var(--text-muted); user-select: none; }
+.code-block .cmd { color: var(--text); }
+.code-block .comment { color: var(--text-muted); font-style: italic; }
+.code-block .string { color: var(--accent); }
+
+.copy-btn {
+  position: absolute; top: 12px; right: 12px;
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.copy-btn:hover { color: var(--text); border-color: var(--text-muted); }
+.copy-btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+.copy-btn.copied { color: var(--success); border-color: var(--success); }
+.copy-btn svg { width: 14px; height: 14px; display: block; }
+.copy-btn .icon-check { display: none; }
+.copy-btn.copied .icon-clipboard { display: none; }
+.copy-btn.copied .icon-check { display: block; }
+
+/* ── Harness cards ── */
+.harnesses {
+  padding: 0 32px;
+  max-width: 1164px;
+  margin: 0 auto;
+}
+.harnesses h2 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.harnesses .lead {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+.harness-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.harness-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 20px;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.harness-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.harness-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.harness-card p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.harness-card .tag {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  background: var(--accent-glow);
+  border-radius: 4px;
+}
+
+/* ── Skills section ── */
+.skills-section {
+  padding: 40px 32px;
+  max-width: 1164px;
+  margin: 0 auto;
+}
+.skills-section h2 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.skills-section .lead {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.skill-group { margin-bottom: 48px; }
+.skill-group h3 {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.skill-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 18px 48px 18px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.skill-card:hover {
+  border-color: var(--border);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.skill-card .skill-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.skill-card .skill-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.skill-card .skill-addr {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.7;
+}
+.skill-card .skill-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.skill-card .skill-arrow {
+  position: absolute;
+  right: 18px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 16px;
+  transition: transform 0.2s, color 0.2s;
+}
+.skill-card:hover .skill-arrow { transform: translateY(-50%) translateX(2px); color: var(--accent); }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: min(680px, 92vw);
+  max-height: 80vh;
+  display: flex; flex-direction: column;
+  transform: translateY(12px) scale(0.97);
+  transition: transform 0.25s ease-out;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+.modal-header .modal-addr {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-left: 12px;
+  opacity: 0.7;
+}
+.modal-close {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.modal-close:hover { color: var(--text); border-color: var(--text-muted); }
+
+.modal-body {
+  padding: 24px 28px 28px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.modal-body h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+.modal-body h3:first-child { margin-top: 0; }
+.modal-body p { margin-bottom: 12px; }
+.modal-body ul { padding-left: 20px; margin-bottom: 12px; }
+.modal-body li { margin-bottom: 4px; font-size: 13px; }
+.modal-body code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--code-bg);
+  color: var(--accent);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.modal-body .modal-code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+.modal-body .exec-model {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.modal-body .exec-sync { background: rgba(34,197,94,0.12); color: var(--success); }
+.modal-body .exec-spc { background: var(--accent-glow); color: var(--accent); }
+.modal-body .exec-twophase { background: rgba(96,165,250,0.12); color: #60a5fa; }
+
+/* ── Architecture ── */
+.arch-section {
+  padding: 0 32px;
+  max-width: 1164px;
+  margin: 0 auto;
+}
+.arch-section h2 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.arch-section .lead {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+/* ── Chain ref ── */
+.chain-ref {
+  padding: 0 32px;
+  max-width: 1164px;
+  margin: 0 auto;
+}
+.chain-ref h2 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 40px;
+}
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+.ref-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.ref-item .ref-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.ref-item .ref-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text);
+  word-break: break-all;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 40px 32px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+footer a { color: var(--accent); }
+#explorer h2 a:hover { text-shadow: 0 0 20px rgba(249,115,22,0.4); color: var(--accent); opacity: 1; }
+.explorer-frame:hover { border-color: var(--accent); box-shadow: 0 0 24px rgba(249,115,22,0.1); }
+.explorer-frame:hover a { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px rgba(249,115,22,0.2); }
+
+.platform-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.platform-btn:hover {
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+.platform-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(249,115,22,0.08);
+}
+
+.idea-pill {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.idea-pill:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: 0 0 16px rgba(249,115,22,0.15);
+}
+.idea-pill.cycling {
+  border-color: var(--text-muted);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+}
+
+#idea-text {
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  nav .logo .nav-logo-text { display: none; }
+  nav .nav-links { gap: 18px; }
+}
+@media (max-width: 640px) {
+  nav { padding: 12px 20px; }
+  nav .nav-links { gap: 14px; }
+  section { padding: 0 20px; }
+  .hero h1 { font-size: 36px; letter-spacing: -1px; }
+  .step { grid-template-columns: 40px 1fr; gap: 14px; }
+  .step-num { width: 40px; height: 40px; font-size: 14px; }
+  .skill-grid { grid-template-columns: 1fr; }
+  .harness-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<!-- ═══ Tessellated Background ═══ -->
+<div id="tess-bg" aria-hidden="true">
+  <svg id="tess-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="tess-vignette"></div>
+</div>
+
+<!-- ═══ Content ═══ -->
+<div class="content-layer">
+
+<nav>
+  <div class="logo" style="display:flex;align-items:center;gap:10px;">
+    <div id="logo-3d" style="width:36px;height:36px;overflow:hidden;border-radius:4px;cursor:grab;"></div>
+    <span class="nav-logo-text" style="font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--accent);letter-spacing:-0.3px;">ritual-dapp-skills</span>
+  </div>
+  <div class="nav-links">
+    <a href="#quickstart">Quick Start</a>
+    <a href="#skills">Skills</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#chain">Chain</a>
+    <a href="https://github.com/ritual-foundation/ritual-dapp-skills" target="_blank">GitHub</a>
+  </div>
+</nav>
+
+<!-- ═══ FULLPAGE SLIDE SYSTEM ═══ -->
+<div class="fp-wrapper">
+<div class="fp-pin">
+<div class="fp-counter"><span id="fp-current">01</span> / <span id="fp-total">--</span></div>
+<div class="fp-progress" id="fp-progress" aria-label="Page progress"><div class="fp-progress-fill" id="fp-progress-fill"></div></div>
+
+<!-- Slide 0: Hero -->
+<div class="fp-slide active" data-slide="0" style="align-items:center;text-align:center;padding-top:80px;">
+  <svg class="im-hero-diamond" viewBox="0 0 189 189" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path pathLength="1" d="M30.4227 108.445L40.6803 98.1203L48.5666 106.058L30.0682 124.677L0.70482 95.1222L30.0678 65.5677L70.0435 105.804L62.1576 113.741L30.4227 81.7994L30.068 81.4424L29.7133 81.7994L16.827 94.7696L16.4768 95.122L16.827 95.4744L29.7133 108.445L30.068 108.802L30.4227 108.445ZM73.0227 22.3335L112.998 62.5693L105.112 70.5069L73.3773 38.5655L73.0226 38.2085L72.6679 38.5655L59.7815 51.5358L59.4314 51.8882L59.7815 52.2406L70.0437 62.5695L62.1578 70.5068L43.6594 51.888L73.0227 22.3335ZM76.0015 127.675L83.8871 119.738L115.622 151.68L115.977 152.037L116.331 151.68L129.218 138.709L129.568 138.357L129.218 138.005L118.956 127.676L126.842 119.738L145.341 138.356L115.977 167.911L76.0015 127.675ZM126.842 76.5037L158.577 108.445L158.932 108.802L159.287 108.445L172.173 95.4749L172.523 95.1225L172.173 94.7701L159.287 81.7999L158.932 81.4429L158.577 81.7999L148.32 92.1242L140.433 84.1866L158.932 65.5679L188.295 95.1223L158.932 124.677L118.956 84.441L126.842 76.5037ZM73.3773 151.679L83.6349 141.354L91.5211 149.292L73.0227 167.911L43.6594 138.356L83.6347 98.1201L91.521 106.058L59.7815 138.004L59.4314 138.356L59.7815 138.709L72.6679 151.679L73.0226 152.036L73.3773 151.679ZM105.368 92.12L97.4825 84.1828L129.222 52.2368L129.572 51.8844L129.222 51.5319L116.336 38.5617L115.981 38.2047L115.626 38.5617L105.369 48.8861L97.4826 40.9488L115.981 22.3297L145.344 51.8842L105.368 92.12ZM91.5208 62.8237L62.4101 92.1239L54.5242 84.1866L83.6349 54.8865L91.5208 62.8237ZM76.0017 84.4408L83.8876 76.5036L112.998 105.804L105.112 113.741L76.0017 84.4408ZM97.4786 127.421L126.589 98.1205L134.476 106.058L105.365 135.358L97.4786 127.421ZM94.669 30.6567L79.7922 15.683L94.669 0.709411L109.546 15.683L94.669 30.6567ZM94.6691 188.291L79.7923 173.317L94.6691 158.343L109.546 173.317L94.6691 188.291Z" stroke="url(#diamond-grad)" stroke-width="0.8" fill="none"/>
+    <defs><linearGradient id="diamond-grad" x1="0" y1="0" x2="189" y2="189"><stop offset="0%" stop-color="#fdba74"/><stop offset="50%" stop-color="#f97316"/><stop offset="100%" stop-color="#c2410c"/></linearGradient></defs>
+  </svg>
+  <h1 style="font-size:clamp(48px,7vw,96px);font-weight:700;letter-spacing:-3px;line-height:1;margin-bottom:48px;">Build dApps on<br><span class="accent">Ritual</span></h1>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn-primary" style="padding:16px 36px;font-size:16px;" onclick="window.slideMode?fpGo(1):document.getElementById('quickstart-step').scrollIntoView({behavior:'smooth'})">Start Building</button>
+    <button class="btn-secondary" style="padding:16px 36px;font-size:16px;" onclick="window.slideMode?(exitSlideMode(),setTimeout(()=>document.getElementById('skills').scrollIntoView({behavior:'smooth'}),1200)):document.getElementById('skills').scrollIntoView({behavior:'smooth'})">Explore Skills</button>
+  </div>
+  <div id="scroll-hint" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:var(--text-muted);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;pointer-events:none;opacity:0.4;">scroll</div>
+</div>
+
+<!-- Slide 1: Install -->
+<div class="fp-slide" data-slide="1" id="quickstart-step">
+  <div class="im-panel-inner">
+    <div class="im-step-text">
+      <div class="im-step-num">01</div>
+          <h2 class="im-step-title">Install the<br>skill system</h2>
+      <p class="im-step-desc">One command. Your AI agent gains access to every Ritual precompile, contract pattern, and deployment workflow. Loaded on demand as needed.</p>
+    </div>
+    <div class="im-step-visual">
+      <div class="im-terminal">
+        <div class="im-terminal-bar"><div class="im-terminal-dot"></div><div class="im-terminal-dot"></div><div class="im-terminal-dot"></div></div>
+        <div class="im-terminal-body" id="install-block">
+          <button class="copy-btn" onclick="copyCode('install-block')" aria-label="Copy">
+            <svg class="icon-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          <span class="prompt">$ </span><span class="cmd" id="install-cmd">git clone https://github.com/ritual-foundation/ritual-dapp-skills.git .claude/skills/ritual-dapp-skills</span>
+        </div>
+      </div>
+      <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;">
+        <button class="platform-btn active" onclick="setPlatform(this,'claude')">Claude Code</button>
+        <button class="platform-btn" onclick="setPlatform(this,'cursor')">Cursor</button>
+        <button class="platform-btn" onclick="setPlatform(this,'codex')">Codex CLI</button>
+        <button class="platform-btn" onclick="setPlatform(this,'hermes')">Hermes</button>
+        <button class="platform-btn" onclick="setPlatform(this,'openclaw')">OpenClaw</button>
+      </div>
+      <p style="margin-top:14px;font-size:11px;color:var(--text-muted);line-height:1.55;font-family:var(--font-mono);">
+        <span style="color:var(--accent);">*</span> Recommended:
+        <span style="color:var(--text-secondary);">Claude Code + Opus 4.7 Max</span>
+        <span style="color:var(--text-muted);"> or </span>
+        <span style="color:var(--text-secondary);">Cursor + Codex 5.3 Extra High</span>.
+        Other combinations work, mileage may vary.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: Describe -->
+<div class="fp-slide" data-slide="2">
+  <div class="im-panel-inner">
+    <div class="im-step-text">
+          <div class="im-step-num">02</div>
+          <h2 class="im-step-title">Describe what<br>you want</h2>
+      <p class="im-step-desc">Paste this into your agent. Replace the wallet address and the last line with your idea. Leave the idea out entirely and the agent will suggest one.</p>
+    </div>
+    <div class="im-step-visual">
+      <div class="im-terminal">
+        <div class="im-terminal-bar"><div class="im-terminal-dot"></div><div class="im-terminal-dot"></div><div class="im-terminal-dot"></div></div>
+        <div class="im-terminal-body" id="prompt-block">
+          <button class="copy-btn" onclick="copyCode('prompt-block')" aria-label="Copy">
+            <svg class="icon-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          <span class="cmd">Read the file skills/ritual/SKILL.md and follow its instructions.</span><br><br>
+          <span class="cmd">Wallet: <span class="str">0xYOUR_FUNDED_WALLET_ADDRESS</span></span><br><br>
+          <div id="idea-slot" style="min-height:5.4em;display:block;">
+            <span class="str" id="idea-text">Build me an autonomous agent on-chain that is indistinguishable from a human, in terms of what they see, think, and do.</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px;">
+        <span class="idea-pill" onclick="setIdea(this.dataset.idea)" data-idea="Build me a private multi-modal ChatGPT on-chain.">Private multi-modal ChatGPT on-chain</span>
+        <span class="idea-pill" onclick="setIdea(this.dataset.idea)" data-idea="Build me an autonomous agent that reads news and lists prediction markets.">Autonomous agent that reads news and lists prediction markets</span>
+        <span class="idea-pill" onclick="setIdea(this.dataset.idea)" data-idea="Build me a TEE credential marketplace for selling social media access.">TEE credential marketplace for selling social media access</span>
+        <span class="idea-pill" onclick="setIdea(this.dataset.idea)" data-idea="Build me an RWA dark pool for trading nat gas futures with Hyperliquid cancel prioritization semantics.">RWA dark pool with Hyperliquid cancel prioritization</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Build -->
+<div class="fp-slide" data-slide="3">
+  <div class="im-panel-inner">
+    <div class="im-step-text">
+          <div class="im-step-num">03</div>
+          <h2 class="im-step-title">The agent<br>takes over</h2>
+      <p class="im-step-desc">Your agent asks 0-5 targeted questions, selects the right precompiles, and builds your dApp in phases, verifying each one before moving on.</p>
+      <p class="im-step-desc" style="margin-top:12px;color:var(--text-muted);font-size:13px;">Something broken? Just describe the symptom. The debugger activates automatically.</p>
+    </div>
+    <div class="im-step-visual">
+      <div class="im-terminal" style="min-height:320px;">
+        <div class="im-terminal-bar">
+          <div class="im-terminal-dot"></div><div class="im-terminal-dot"></div><div class="im-terminal-dot"></div>
+          <span style="margin-left:auto;font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">claude-code / ritual-dapp</span>
+        </div>
+        <div id="agent-replay" style="padding:14px 18px;font-family:var(--font-mono);font-size:11.5px;line-height:1.7;color:var(--text-secondary);height:280px;overflow:hidden;position:relative;">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /fp-pin -->
+</div><!-- /fp-wrapper -->
+
+<!-- ═══ Normal Scrollable Content (after slide system) ═══ -->
+<div id="scroll-content" style="display:none;">
+
+<!-- Harnesses -->
+<section style="padding:80px 32px;max-width:1164px;margin:0 auto;">
+  <h2 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:12px;">Works with your tools</h2>
+  <p style="color:var(--text-secondary);font-size:15px;max-width:640px;margin-bottom:32px;">The skills are plain markdown files. Any AI coding assistant that reads instructions can use them.</p>
+  <div class="harness-grid">
+    <div class="harness-card">
+      <h4>Claude Code</h4>
+      <p>Clone into <code>.claude/skills/ritual-dapp-skills</code> in your project root. Skills auto-load when Claude Code needs them.</p>
+      <span class="tag">git clone</span>
+    </div>
+    <div class="harness-card">
+      <h4>Cursor</h4>
+      <p>Clone into <code>.cursor/skills/</code> in your project root. Skills auto-load when the agent needs them.</p>
+      <span class="tag">git clone</span>
+    </div>
+    <div class="harness-card">
+      <h4>Codex CLI</h4>
+      <p>Clone into <code>.codex/skills/</code> or install via <code>/skills</code> in the CLI. SKILL.md format is natively supported.</p>
+      <span class="tag">git clone</span>
+    </div>
+    <div class="harness-card">
+      <h4>Hermes Agent</h4>
+      <p><code>hermes skills tap add ritual-foundation/ritual-dapp-skills</code></p>
+      <span class="tag">One command</span>
+    </div>
+    <div class="harness-card">
+      <h4>OpenClaw</h4>
+      <p>Clone into <code>~/.openclaw/skills/</code> or your workspace <code>skills/</code> directory. SKILL.md format is natively supported.</p>
+      <span class="tag">git clone</span>
+    </div>
+    <div class="harness-card">
+      <h4>Copilot / ChatGPT</h4>
+      <p>Paste the contents of <code>skills/ritual/SKILL.md</code> into your system prompt or custom instructions.</p>
+      <span class="tag">System prompt</span>
+    </div>
+    <div class="harness-card">
+      <h4>Any LLM Agent</h4>
+      <p>Clone the repo and feed the relevant <code>SKILL.md</code> files as context. Each skill is self-contained.</p>
+      <span class="tag">Universal</span>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section style="padding:80px 32px;max-width:1164px;margin:0 auto;" id="skills">
+  <h2 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:12px;">Skills</h2>
+  <p style="color:var(--text-secondary);font-size:15px;max-width:640px;margin-bottom:32px;">Click any skill to see what it teaches your agent. Each skill is a self-contained instruction set. The agent loads only what it needs.</p>
+  <div id="skills-container"></div>
+</section>
+
+<!-- Architecture -->
+<section style="padding:80px 32px;max-width:1164px;margin:0 auto;" id="architecture">
+  <h2 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:12px;">How it works</h2>
+  <p style="color:var(--text-secondary);font-size:15px;max-width:640px;margin-bottom:32px;">You describe what you want. The agent activates its behavioral protocols, loads the right skills, builds, verifies, and debugs.</p>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" fill="none" style="width:100%;max-width:960px;margin:0 auto;display:block;">
+    <rect width="960" height="540" rx="12" fill="#0c0c0e"/>
+
+    <!-- ═══ LEFT: Human Input Zone ═══ -->
+    <rect x="20" y="20" width="160" height="500" rx="10" fill="none" stroke="#333" stroke-width="0.8"/>
+    <text x="100" y="46" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#999" letter-spacing="0.15em" font-weight="500">YOU</text>
+
+    <rect x="36" y="190" width="128" height="40" rx="6" fill="#111" stroke="#f97316" stroke-width="1.2"/>
+    <text x="100" y="214" text-anchor="middle" font-family="monospace" font-size="10" fill="#f97316">"Build me a..."</text>
+
+    <text x="100" y="252" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#888">describe your idea</text>
+    <text x="100" y="268" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#888">or report a problem</text>
+
+    <text x="100" y="310" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#999" font-style="italic">checkpoints</text>
+    <g font-family="monospace" font-size="7" fill="#888">
+      <text x="100" y="330" text-anchor="middle">approve architecture</text>
+      <text x="100" y="346" text-anchor="middle">approve contracts</text>
+      <text x="100" y="362" text-anchor="middle">approve frontend</text>
+      <text x="100" y="378" text-anchor="middle">approve deploy</text>
+    </g>
+
+    <text x="100" y="420" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#777" font-style="italic">you confirm between</text>
+    <text x="100" y="434" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#777" font-style="italic">each phase</text>
+
+    <!-- ═══ Arrow crossing the boundary ═══ -->
+    <line x1="180" y1="210" x2="210" y2="210" stroke="#f97316" stroke-width="1.2" opacity="0.6"/>
+    <polygon points="208,206 216,210 208,214" fill="#f97316" opacity="0.6"/>
+
+    <!-- ═══ RIGHT: The Agent System ═══ -->
+    <rect x="218" y="20" width="722" height="500" rx="10" fill="none" stroke="#444" stroke-width="0.6"/>
+    <text x="580" y="46" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#999" letter-spacing="0.15em" font-weight="500">AGENT SYSTEM</text>
+
+    <!-- ── Omega Meta Layer (top band, expanded) ── -->
+    <rect x="232" y="58" width="694" height="120" rx="8" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.35"/>
+    <text x="248" y="78" font-family="system-ui,sans-serif" font-size="9" fill="#f97316" letter-spacing="0.12em" font-weight="600" opacity="0.8">META  LAYER</text>
+    <text x="912" y="78" text-anchor="end" font-family="system-ui,sans-serif" font-size="7.5" fill="#888" font-style="italic">always active, invisible to user</text>
+
+    <!-- Bootstrap -->
+    <rect x="248" y="88" width="120" height="26" rx="5" fill="#1a1008" stroke="#f97316" stroke-width="1"/>
+    <text x="308" y="105" text-anchor="middle" font-family="monospace" font-size="9" fill="#f97316" font-weight="600">bootstrap</text>
+
+    <line x1="368" y1="101" x2="388" y2="101" stroke="#f97316" stroke-width="0.8" opacity="0.4"/>
+    <polygon points="386,97 394,101 386,105" fill="#f97316" opacity="0.4"/>
+
+    <!-- Protocol pills row 1 -->
+    <g font-family="monospace" font-size="7.5">
+      <rect x="396" y="88" width="72" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="432" y="100" text-anchor="middle" fill="#ea580c">Track Cost</text>
+      <rect x="472" y="88" width="86" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="515" y="100" text-anchor="middle" fill="#ea580c">Distrust Priors</text>
+      <rect x="562" y="88" width="80" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="602" y="100" text-anchor="middle" fill="#ea580c">Elicitation</text>
+      <rect x="646" y="88" width="72" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="682" y="100" text-anchor="middle" fill="#ea580c">Interleave</text>
+      <rect x="722" y="88" width="86" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="765" y="100" text-anchor="middle" fill="#ea580c">Circuit Breaker</text>
+      <rect x="812" y="88" width="74" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="849" y="100" text-anchor="middle" fill="#ea580c">Verification</text>
+
+      <!-- Protocol pills row 2 -->
+      <rect x="396" y="109" width="94" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="443" y="121" text-anchor="middle" fill="#ea580c">Search First</text>
+      <rect x="494" y="109" width="80" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="534" y="121" text-anchor="middle" fill="#ea580c">Ask at Forks</text>
+      <rect x="578" y="109" width="64" height="17" rx="3" fill="#1a1008" stroke="#c2410c" stroke-width="0.5"/>
+      <text x="610" y="121" text-anchor="middle" fill="#ea580c">Anti-Slop</text>
+    </g>
+
+    <!-- Inspiration + Projection (distinct omega skills, row 3) -->
+    <rect x="248" y="134" width="100" height="26" rx="5" fill="#1a1008" stroke="#f97316" stroke-width="0.8"/>
+    <text x="298" y="151" text-anchor="middle" font-family="monospace" font-size="8" fill="#f97316">inspiration</text>
+
+    <line x1="348" y1="147" x2="368" y2="147" stroke="#f97316" stroke-width="0.6" opacity="0.35"/>
+    <polygon points="366,144 372,147 366,150" fill="#f97316" opacity="0.35"/>
+
+    <rect x="374" y="134" width="100" height="26" rx="5" fill="#1a1008" stroke="#f97316" stroke-width="0.8"/>
+    <text x="424" y="151" text-anchor="middle" font-family="monospace" font-size="8" fill="#f97316">projection</text>
+
+    <text x="500" y="151" font-family="system-ui,sans-serif" font-size="6.5" fill="#888" font-style="italic">if no idea → inspiration → projection → builder</text>
+
+    <!-- Governs arrows -->
+    <line x1="430" y1="178" x2="430" y2="196" stroke="#f97316" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,3"/>
+    <line x1="720" y1="178" x2="720" y2="196" stroke="#f97316" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,3"/>
+
+    <!-- ── Alpha Build (left half of lower area) ── -->
+    <rect x="232" y="190" width="348" height="296" rx="8" fill="none" stroke="#22c55e" stroke-width="0.8" opacity="0.3"/>
+    <text x="248" y="210" font-family="system-ui,sans-serif" font-size="9" fill="#22c55e" letter-spacing="0.12em" font-weight="600" opacity="0.9">BUILD</text>
+    <text x="564" y="210" text-anchor="end" font-family="system-ui,sans-serif" font-size="7.5" fill="#888" font-style="italic">3-6 skills per project</text>
+
+    <!-- Builder agent -->
+    <rect x="248" y="220" width="130" height="28" rx="5" fill="#0a1a0a" stroke="#22c55e" stroke-width="1.2"/>
+    <text x="313" y="238" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#22c55e" font-weight="600">builder agent</text>
+
+    <!-- Phase pipeline -->
+    <g font-family="monospace" font-size="8" fill="#22c55e" opacity="0.7">
+      <rect x="248" y="258" width="72" height="20" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.5"/>
+      <text x="284" y="272" text-anchor="middle">architecture</text>
+      <text x="326" y="271" fill="#777" font-size="6">→</text>
+      <rect x="334" y="258" width="62" height="20" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.5"/>
+      <text x="365" y="272" text-anchor="middle">contracts</text>
+      <text x="402" y="271" fill="#777" font-size="6">→</text>
+      <rect x="410" y="258" width="60" height="20" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.5"/>
+      <text x="440" y="272" text-anchor="middle">frontend</text>
+
+      <rect x="248" y="284" width="62" height="20" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.5"/>
+      <text x="279" y="298" text-anchor="middle">backend</text>
+      <text x="316" y="297" fill="#777" font-size="6">→</text>
+      <rect x="324" y="284" width="56" height="20" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.5"/>
+      <text x="352" y="298" text-anchor="middle">testing</text>
+      <text x="386" y="297" fill="#777" font-size="6">→</text>
+      <rect x="394" y="284" width="56" height="20" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.5"/>
+      <text x="422" y="298" text-anchor="middle">deploy</text>
+    </g>
+
+    <!-- Skills grid -->
+    <text x="248" y="326" font-family="system-ui,sans-serif" font-size="7.5" fill="#888">Skills loaded per project:</text>
+    <g font-family="monospace" font-size="7" fill="#22c55e" opacity="0.55">
+      <rect x="248" y="334" width="52" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="274" y="346" text-anchor="middle">http</text>
+      <rect x="304" y="334" width="42" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="325" y="346" text-anchor="middle">llm</text>
+      <rect x="350" y="334" width="52" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="376" y="346" text-anchor="middle">agents</text>
+      <rect x="406" y="334" width="66" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="439" y="346" text-anchor="middle">multimodal</text>
+
+      <rect x="248" y="355" width="64" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="280" y="367" text-anchor="middle">scheduler</text>
+      <rect x="316" y="355" width="52" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="342" y="367" text-anchor="middle">secrets</text>
+      <rect x="372" y="355" width="42" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="393" y="367" text-anchor="middle">x402</text>
+      <rect x="418" y="355" width="52" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="444" y="367" text-anchor="middle">passkey</text>
+
+      <rect x="248" y="376" width="48" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="272" y="388" text-anchor="middle">wallet</text>
+      <rect x="300" y="376" width="48" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="324" y="388" text-anchor="middle">deploy</text>
+      <rect x="352" y="376" width="68" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="386" y="388" text-anchor="middle">longrunning</text>
+      <rect x="424" y="376" width="48" height="17" rx="3" fill="#0a1a0a" stroke="#1a4a1a" stroke-width="0.4"/>
+      <text x="448" y="388" text-anchor="middle">design</text>
+    </g>
+
+    <!-- Verify annotation -->
+    <rect x="248" y="406" width="316" height="18" rx="3" fill="none" stroke="#f97316" stroke-width="0.4" stroke-dasharray="3,3" opacity="0.35"/>
+    <text x="406" y="419" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" fill="#f97316" opacity="0.7">verify after each phase</text>
+
+    <!-- Auto-invoke arrow to debugger -->
+    <line x1="406" y1="436" x2="406" y2="448" stroke="#22c55e" stroke-width="0.6" opacity="0.3"/>
+    <line x1="406" y1="448" x2="600" y2="448" stroke="#555" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,3"/>
+    <polygon points="598,445 604,448 598,451" fill="#999" opacity="0.25"/>
+    <text x="500" y="444" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" fill="#888" font-style="italic">auto-invokes after deploy</text>
+
+    <!-- ── Beta Debug (right half of lower area) ── -->
+    <rect x="588" y="190" width="338" height="296" rx="8" fill="none" stroke="#ef4444" stroke-width="0.8" opacity="0.3"/>
+    <text x="604" y="210" font-family="system-ui,sans-serif" font-size="9" fill="#ef4444" letter-spacing="0.12em" font-weight="600" opacity="0.9">DEBUG</text>
+    <text x="912" y="210" text-anchor="end" font-family="system-ui,sans-serif" font-size="7.5" fill="#888" font-style="italic">reactive pipeline</text>
+
+    <!-- Debugger agent -->
+    <rect x="604" y="220" width="130" height="28" rx="5" fill="#1a0a0a" stroke="#ef4444" stroke-width="1.2"/>
+    <text x="669" y="238" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#ef4444" font-weight="600">debugger agent</text>
+
+    <!-- Pipeline -->
+    <g font-family="monospace" font-size="8" fill="#ef4444" opacity="0.7">
+      <rect x="604" y="260" width="306" height="22" rx="3" fill="#1a0a0a" stroke="#4a1a1a" stroke-width="0.5"/>
+      <text x="616" y="275" fill="#ef4444" font-size="7.5" font-weight="700">1</text>
+      <text x="630" y="275">triage</text>
+      <text x="690" y="275" fill="#888" font-size="7">5 categories, 16 sub-types</text>
+
+      <line x1="757" y1="282" x2="757" y2="290" stroke="#ef4444" stroke-width="0.5" opacity="0.25"/>
+      <polygon points="754,288 757,294 760,288" fill="#ef4444" opacity="0.25"/>
+
+      <rect x="604" y="294" width="306" height="22" rx="3" fill="#1a0a0a" stroke="#4a1a1a" stroke-width="0.5"/>
+      <text x="616" y="309" fill="#ef4444" font-size="7.5" font-weight="700">2</text>
+      <text x="630" y="309">smoke tests</text>
+      <text x="718" y="309" fill="#888" font-size="7">RPC, wallet, executor</text>
+
+      <line x1="757" y1="316" x2="757" y2="324" stroke="#ef4444" stroke-width="0.5" opacity="0.25"/>
+      <polygon points="754,322 757,328 760,322" fill="#ef4444" opacity="0.25"/>
+
+      <rect x="604" y="328" width="306" height="22" rx="3" fill="#1a0a0a" stroke="#4a1a1a" stroke-width="0.5"/>
+      <text x="616" y="343" fill="#ef4444" font-size="7.5" font-weight="700">3</text>
+      <text x="630" y="343">quick-match</text>
+      <text x="718" y="343" fill="#888" font-size="7">10 known root causes</text>
+
+      <line x1="757" y1="350" x2="757" y2="358" stroke="#ef4444" stroke-width="0.5" opacity="0.25"/>
+      <polygon points="754,356 757,362 760,356" fill="#ef4444" opacity="0.25"/>
+
+      <rect x="604" y="362" width="306" height="22" rx="3" fill="#1a0a0a" stroke="#4a1a1a" stroke-width="0.5"/>
+      <text x="616" y="377" fill="#ef4444" font-size="7.5" font-weight="700">4</text>
+      <text x="630" y="377">diagnosis</text>
+      <text x="706" y="377" fill="#888" font-size="7">6 ordered checks</text>
+
+      <line x1="757" y1="384" x2="757" y2="392" stroke="#ef4444" stroke-width="0.5" opacity="0.25"/>
+      <polygon points="754,390 757,396 760,390" fill="#ef4444" opacity="0.25"/>
+
+      <rect x="604" y="396" width="306" height="22" rx="3" fill="#1a0a0a" stroke="#4a1a1a" stroke-width="0.5"/>
+      <text x="616" y="411" fill="#ef4444" font-size="7.5" font-weight="700">5</text>
+      <text x="630" y="411">fix + verify</text>
+      <text x="718" y="411" fill="#888" font-size="7">apply fix, regression-check</text>
+    </g>
+
+    <!-- Feedback arrow -->
+    <line x1="604" y1="408" x2="582" y2="408" stroke="#555" stroke-width="0.6" opacity="0.2" stroke-dasharray="3,3"/>
+    <line x1="582" y1="408" x2="582" y2="298" stroke="#555" stroke-width="0.6" opacity="0.2" stroke-dasharray="3,3"/>
+    <polygon points="579,300 582,294 585,300" fill="#999" opacity="0.2"/>
+    <text x="586" y="358" font-family="system-ui,sans-serif" font-size="6.5" fill="#888" writing-mode="tb">fixes flow back</text>
+
+  </svg>
+</section>
+
+<!-- Chain Reference -->
+<section style="padding:80px 32px;max-width:1164px;margin:0 auto;" id="chain">
+  <h2 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:32px;">Chain Reference</h2>
+
+  <h3 style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle);">Chain</h3>
+  <div class="ref-grid" style="margin-bottom:40px;">
+    <div class="ref-item">
+      <div class="ref-label">Chain ID</div>
+      <div class="ref-value">1979</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">Currency</div>
+      <div class="ref-value">RITUAL (18 decimals)</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">Block Time</div>
+      <div class="ref-value">~350ms</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle);">Endpoints</h3>
+  <div class="ref-grid" style="margin-bottom:40px;">
+    <div class="ref-item">
+      <div class="ref-label">RPC (HTTP)</div>
+      <div class="ref-value">rpc.ritualfoundation.org</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">RPC (WebSocket)</div>
+      <div class="ref-value">rpc.ritualfoundation.org/ws</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">Explorer</div>
+      <div class="ref-value">explorer.ritualfoundation.org</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle);">System Contracts</h3>
+  <div class="ref-grid">
+    <div class="ref-item">
+      <div class="ref-label">RitualWallet</div>
+      <div class="ref-value"><a href="https://explorer.ritualfoundation.org/address/0x532F0dF0896F353d8C3DD8cc134e8129DA2a3948" target="_blank">0x532F0dF0896F353d8C3DD8cc134e8129DA2a3948</a></div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">AsyncJobTracker</div>
+      <div class="ref-value"><a href="https://explorer.ritualfoundation.org/address/0xC069FFCa0389f44eCA2C626e55491b0ab045AEF5" target="_blank">0xC069FFCa0389f44eCA2C626e55491b0ab045AEF5</a></div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">TEEServiceRegistry</div>
+      <div class="ref-value"><a href="https://explorer.ritualfoundation.org/address/0x9644e8562cE0Fe12b4deeC4163c064A8862Bf47F" target="_blank">0x9644e8562cE0Fe12b4deeC4163c064A8862Bf47F</a></div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">Scheduler</div>
+      <div class="ref-value"><a href="https://explorer.ritualfoundation.org/address/0x56e776BAE2DD60664b69Bd5F865F1180ffB7D58B" target="_blank">0x56e776BAE2DD60664b69Bd5F865F1180ffB7D58B</a></div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">SecretsACL</div>
+      <div class="ref-value"><a href="https://explorer.ritualfoundation.org/address/0xf9BF1BC8A3e79B9EBeD0fa2Db70D0513fecE32FD" target="_blank">0xf9BF1BC8A3e79B9EBeD0fa2Db70D0513fecE32FD</a></div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-label">AsyncDelivery</div>
+      <div class="ref-value"><a href="https://explorer.ritualfoundation.org/address/0x5A16214fF555848411544b005f7Ac063742f39F6" target="_blank">0x5A16214fF555848411544b005f7Ac063742f39F6</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- Block Explorer -->
+<section style="padding:80px 32px 120px;max-width:1164px;margin:0 auto;" id="explorer">
+  <h2 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:24px;"><a href="https://explorer.ritualfoundation.org/" target="_blank" style="color:var(--text);text-decoration:none;transition:text-shadow 0.3s;">Block Explorer</a></h2>
+  <div class="explorer-frame" style="border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle);height:700px;position:relative;transition:border-color 0.3s;max-width:1000px;margin:0 auto;">
+    <iframe src="https://explorer.ritualfoundation.org/" style="width:100%;height:calc(100% + 80px);border:none;margin-top:-80px;" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups" title="Ritual Block Explorer"></iframe>
+    <a href="https://explorer.ritualfoundation.org/" target="_blank" style="position:absolute;top:12px;right:12px;padding:6px 14px;border-radius:6px;background:rgba(9,9,11,0.85);border:1px solid var(--border);color:var(--accent);font-family:var(--font-mono);font-size:11px;text-decoration:none;transition:color 0.2s,border-color 0.2s,box-shadow 0.2s;backdrop-filter:blur(8px);z-index:2;border-color:var(--accent);">Open ↗</a>
+  </div>
+</section>
+
+</div><!-- /scroll-content -->
+</div><!-- /content-layer -->
+
+<!-- ═══ Modal ═══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div style="display:flex;align-items:baseline;">
+        <h2 id="modal-title"></h2>
+        <span class="modal-addr" id="modal-addr"></span>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Tessellated Background (ported from ambient-orbs.tsx)
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const TILE_W = 486, TILE_H = 490, HALF_X = 243, HALF_Y = 245;
+  const MOTIF_CX = 600, MOTIF_CY = 337.5;
+  const MOTIF_PATH = "M455.127 368.56L478.692 344.787L497.352 363.612L454.773 406.569L387.704 338.906L454.772 271.242L545.761 363.038L527.101 381.862L455.127 309.25L454.772 308.892L454.417 309.25L425.372 338.553L425.023 338.905L425.372 339.257L454.417 368.56L454.772 368.919L455.127 368.56ZM551.591 173.565L642.579 265.36L623.919 284.186L551.946 211.574L551.591 211.215L551.235 211.574L522.19 240.877L521.841 241.229L522.19 241.581L545.761 265.361L527.102 284.186L484.522 241.228L551.591 173.565ZM576.079 393.627L648.053 466.239L648.408 466.598L648.763 466.239L677.808 436.936L678.157 436.584L677.808 436.232L654.237 412.452L672.898 393.626L715.478 436.583L648.409 504.247L557.42 412.451L576.079 393.627ZM672.899 295.949L744.873 368.562L745.228 368.92L745.583 368.562L774.628 339.258L774.977 338.906L774.628 338.554L745.583 309.251L745.228 308.893L744.873 309.251L721.308 333.025L702.648 314.199L745.227 271.242L812.296 338.906L745.227 406.57L654.239 314.774L672.899 295.949ZM551.946 466.237L575.51 442.464L594.17 461.289L551.591 504.247L484.522 436.583L575.51 344.786L594.17 363.612L522.19 436.23L521.841 436.582L522.19 436.934L551.235 466.237L551.591 466.596L551.946 466.237ZM624.497 333.016L605.838 314.191L677.818 241.572L678.167 241.22L677.818 240.868L648.772 211.565L648.417 211.207L648.062 211.565L624.497 235.339L605.838 216.514L648.417 173.556L715.486 241.22L624.497 333.016ZM594.17 265.935L527.67 333.024L509.011 314.199L575.51 247.11L594.17 265.935ZM557.421 314.774L576.08 295.949L642.579 363.038L623.92 381.863L557.421 314.774ZM690.988 363.613L624.489 430.702L605.829 411.876L672.328 344.787L690.988 363.613ZM600.381 194.154L565.964 159.432L600.381 124.71L634.797 159.432L600.381 194.154ZM600.381 550.29L565.965 515.568L600.381 480.846L634.798 515.568L600.381 550.29Z";
+
+  const COLOR_POOL = [
+    {color:"#c2410c",opacity:0.25},{color:"#f97316",opacity:0.20},
+    {color:"#c2410c",opacity:0.18},{color:"#ea580c",opacity:0.16},
+    {color:"#fb923c",opacity:0.14},{color:"#fdba74",opacity:0.12},
+    {color:"#fed7aa",opacity:0.10},{color:"#ffedd5",opacity:0.08},
+    {color:"#fafaf9",opacity:0.06}
+  ];
+
+  function seededRandom(x,y,seed){
+    let h=seed+x*374761393+y*668265263;
+    h=(h^(h>>13))*1274126177;
+    h=h^(h>>16);
+    return(h&0x7fffffff)/0x7fffffff;
+  }
+
+  function getColor(gx,gy,off){
+    const r=seededRandom(gx,gy,off?137:42);
+    if(r<.2)return COLOR_POOL[0];if(r<.38)return COLOR_POOL[1];
+    if(r<.5)return COLOR_POOL[2];if(r<.6)return COLOR_POOL[3];
+    if(r<.73)return COLOR_POOL[4];if(r<.85)return COLOR_POOL[5];
+    if(r<.92)return COLOR_POOL[6];if(r<.97)return COLOR_POOL[7];
+    return COLOR_POOL[8];
+  }
+
+  const svg = document.getElementById('tess-svg');
+  const bg = document.getElementById('tess-bg');
+  const ns = 'http://www.w3.org/2000/svg';
+
+  function buildGrid(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const style = document.createElementNS(ns,'style');
+    style.textContent = `
+      @keyframes trace-loop{0%{stroke-dashoffset:1}50%{stroke-dashoffset:0}100%{stroke-dashoffset:-1}}
+      @keyframes trace-loop-reverse{0%{stroke-dashoffset:-1}50%{stroke-dashoffset:0}100%{stroke-dashoffset:1}}
+    `;
+    svg.appendChild(style);
+
+    const vw=window.innerWidth, vh=window.innerHeight, ov=150;
+    const sx=-TILE_W-ov, sy=-TILE_H-ov, ex=vw+TILE_W+ov, ey=vh+TILE_H+ov;
+
+    function addTile(x,y,gx,gy,off){
+      const c=getColor(gx,gy,off);
+      const g=document.createElementNS(ns,'g');
+      g.setAttribute('transform',`translate(${x-MOTIF_CX},${y-MOTIF_CY})`);
+      g.setAttribute('fill','none');
+
+      const base=document.createElementNS(ns,'path');
+      base.setAttribute('d',MOTIF_PATH);
+      base.setAttribute('stroke',c.color);
+      base.setAttribute('stroke-width','1');
+      base.setAttribute('opacity',c.opacity);
+      g.appendChild(base);
+
+      const dx=x-vw/2, dy=y-vh/2;
+      const heroR=Math.min(Math.max(240,0.36*vw),440)/2+TILE_W/3;
+      const canTrace=dx*dx+dy*dy>heroR*heroR;
+
+      if(canTrace&&Math.random()<0.35){
+        const t=document.createElementNS(ns,'path');
+        t.setAttribute('d',MOTIF_PATH);
+        t.setAttribute('pathLength','1');
+        t.setAttribute('stroke',c.color);
+        t.setAttribute('stroke-width','1.5');
+        t.setAttribute('opacity',Math.min(c.opacity*2.5,1));
+        const dl=0.08+Math.random()*0.17;
+        t.setAttribute('stroke-dasharray',`${dl} ${1-dl}`);
+        t.setAttribute('stroke-linecap','round');
+        t.style.animation=`trace-loop ${10+Math.random()*14}s linear ${Math.random()*15}s infinite`;
+        g.appendChild(t);
+      }
+      if(canTrace&&Math.random()<0.20){
+        const f=document.createElementNS(ns,'path');
+        f.setAttribute('d',MOTIF_PATH);
+        f.setAttribute('pathLength','1');
+        f.setAttribute('stroke',c.color);
+        f.setAttribute('stroke-width','1');
+        f.setAttribute('opacity',Math.min(c.opacity*3,1));
+        const fdl=0.04+Math.random()*0.10;
+        f.setAttribute('stroke-dasharray',`${fdl} ${1-fdl}`);
+        f.setAttribute('stroke-linecap','round');
+        f.style.animation=`trace-loop-reverse ${8+Math.random()*10}s linear ${Math.random()*8}s infinite`;
+        g.appendChild(f);
+      }
+      svg.appendChild(g);
+    }
+
+    for(let gx=sx;gx<ex;gx+=TILE_W)
+      for(let gy=sy;gy<ey;gy+=TILE_H)
+        addTile(gx,gy,Math.round(gx/TILE_W),Math.round(gy/TILE_H),false);
+    for(let gx=sx+HALF_X;gx<ex;gx+=TILE_W)
+      for(let gy=sy+HALF_Y;gy<ey;gy+=TILE_H)
+        addTile(gx,gy,Math.round(gx/TILE_W),Math.round(gy/TILE_H),true);
+  }
+
+  buildGrid();
+  window.addEventListener('resize', buildGrid);
+  setTimeout(()=>bg.classList.add('loaded'),100);
+
+  // Parallax
+  let tx=0,ty=0,cx=0,cy=0;
+  window.addEventListener('mousemove',e=>{
+    tx=(e.clientX/window.innerWidth-0.5)*2;
+    ty=(e.clientY/window.innerHeight-0.5)*2;
+  });
+  (function loop(){
+    cx+=(tx-cx)*0.04; cy+=(ty-cy)*0.04;
+    svg.style.transform=`translate(${cx*12}px,${cy*12}px)`;
+    requestAnimationFrame(loop);
+  })();
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// Skills Data & Rendering
+// ═══════════════════════════════════════════════════════════════
+const SKILLS = {
+  "Meta Protocols": [
+    {name:"Bootstrap",addr:"10 rules",desc:"Meta-kernel: behavioral middleware active for every session",
+     detail:`<h3>What it teaches</h3><p>The 10 behavioral rules that govern how the agent operates on Ritual Chain. Loaded automatically by every entry point.</p><h3>The 10 Rules</h3><ul><li><strong>1. Track Cost</strong>: turn budget governs all thresholds</li><li><strong>2. Distrust Priors</strong>: Ritual violates Ethereum training data</li><li><strong>3. Lazy Elicitation</strong>: 0-5 JIT questions, never a static form</li><li><strong>4. Interleave Build+Debug</strong>: verify after every irreversible action</li><li><strong>5. Circuit Breaker</strong>: detect trajectory divergence, stop before wasting budget</li><li><strong>6. Search Before Asking</strong>: exhaust 5-step resolution hierarchy first</li><li><strong>7. Ask at Forks</strong>: only for expensive preference-based forks</li><li><strong>8. Anti-Slop</strong>: dimensional decomposition for UI artifacts</li><li><strong>9. Verify Non-Interactively</strong>: per-skill checks + 12-step E2E journey</li><li><strong>10. Scope to Project Directory</strong>: all writes within project root, no cross-pollution</li></ul>`,exec:''},
+    {name:"Verification Protocol",addr:"12 steps",desc:"Automated per-skill checks, cross-skill integration, E2E user journey",
+     detail:`<h3>What it teaches</h3><p>The complete non-interactive verification system.</p><h3>Three layers</h3><ul><li><strong>Per-skill checks</strong> (T1-T4 tiers): static analysis, simulation, deployed verification, runtime</li><li><strong>Cross-skill integration</strong>: 8 interface checks (ABI field counts match, addresses match, event names match, etc.)</li><li><strong>Unified 12-step E2E journey</strong>: chain reachable → wallet funded → executor available → contract deployed → wallet funded &amp; balance escrowed → precompile simulates → TX mines → result delivered → result decodable → state updated → frontend renders → backend indexed</li></ul>`,exec:''},
+    {name:"Lazy Elicitation",addr:"v3",desc:"JIT question generation from a 12-dimension universe",
+     detail:`<h3>What it teaches</h3><p>How the agent generates contextual questions instead of using a static form.</p><h3>How it works</h3><ul><li>Parses user's first message for signals (precompile type, statefulness, frontend needs, etc.)</li><li>Identifies top-K unresolved dimensions from a 12-dimension architectural universe</li><li>Generates 0-5 questions with 4 contextualized options each</li><li>>200 words from user = infer everything, confirm only</li><li>Almost nothing from user = route to front door</li></ul>`,exec:''},
+    {name:"Circuit Breaker",addr:"",desc:"Trajectory divergence detection, knows when to stop",
+     detail:`<h3>What it teaches</h3><p>Self-awareness for the agent: knowing when the current approach isn't converging.</p><h3>How it works</h3><ul><li>Weighted progress markers: chain connection (1), deploy (3), settle (5), E2E (8)</li><li>Stall thresholds by phase: scaffolding (3 turns), contracts (5), frontend (4), integration (6)</li><li>Immediate break on: error oscillation, scope creep into verified files, user frustration signals</li><li>Proposes: simplify scope / pivot architecture / pause and hand back</li></ul>`,exec:''},
+    {name:"Projection",addr:"pre-builder",desc:"Transforms raw ideas into Ritual-native specs with precompile mappings",
+     detail:`<h3>What it teaches</h3><p>Before the builder agent starts writing code, this skill takes the user's raw idea and maps every capability to the optimal Ritual precompile or system contract. The builder receives a structured spec instead of a vague prompt.</p><h3>How it works</h3><ul><li>Reads the overview and precompiles skills to load the full capability surface</li><li>Decomposes the idea into capabilities (data ingestion, AI inference, scheduling, privacy, etc.)</li><li>Maps each capability to a specific precompile address using a comprehensive mapping table</li><li>Detects the 1-phase async constraint (only one short-running async call per TX) and resolves via Scheduler chaining</li><li>Detects additional constraints: sender lock, block time, encrypted input + auto-selection conflicts</li><li>Checks reference contracts in examples/registry.json for reusable patterns</li><li>Surfaces implicit requirements (RitualWallet deposit, callback handlers, storage config)</li><li>Outputs a structured spec with mapped capabilities, constraints, required skills, and off-chain components</li></ul>`,exec:''},
+    {name:"Inspiration",addr:"live search",desc:"JIT idea generation from trending blockchain + AI themes",
+     detail:`<h3>What it teaches</h3><p>When the user doesn't know what to build, this skill searches the web for what's trending in blockchain and AI right now, filters for ideas that require Ritual-specific precompiles, and presents 3-5 concrete buildable app ideas.</p><h3>How it works</h3><ul><li>Three parallel web searches for current trends (varies by date)</li><li>Hard filter: each idea must map to a specific precompile address (0x08XX)</li><li>Deduplication against static examples already shown elsewhere</li><li>Each idea includes: one-line pitch, why now (from search), why Ritual (which precompile), complexity rating</li><li>Fallback to static examples if search fails</li></ul><h3>Constraints</h3><ul><li>3-5 ideas, never more</li><li>At least one simple (1 precompile) and one ambitious (3+)</li><li>Every idea must be buildable in one session</li><li>No generic blockchain apps that work on any EVM chain</li></ul>`,exec:''},
+  ],
+  "Architecture & Reference": [
+    {name:"Overview",addr:"",desc:"Chain architecture, 3 execution models, 9-state async lifecycle, TEE trust model",
+     detail:`<h3>What it teaches</h3><p>The complete Ritual Chain mental model. Three execution models (synchronous, short-running async, long-running async), the 9-state async transaction lifecycle, TEE trust model, executor selection, and all system contracts.</p><h3>Prior Correction</h3><p>8 Ethereum assumptions that are <strong>wrong</strong> on Ritual:</p><ul><li><code>writeContractAsync</code> breaks on async precompiles. Use <code>useSendTransaction</code></li><li><code>msg.sender</code> in callbacks = AsyncDelivery proxy, not the user</li><li>Only one short-running async call per transaction</li><li>Fees are RitualWallet deposits, not gas</li><li>Block time is ~350ms, not 12s</li><li>Receipts have <code>spcCalls</code> field with precompile results</li><li>Sender lock: one async job per EOA at a time</li><li>No Chainlink/ERC-4337/Gelato. Ritual has native equivalents</li></ul>`,exec:''},
+    {name:"Precompiles ABI",addr:"16 addresses",desc:"Complete ABI reference for all precompiles with encoding examples",
+     detail:`<h3>What it teaches</h3><p>Input/output ABI for every precompile, with field counts, Solidity encoding, and viem TypeScript patterns.</p><h3>Precompile Categories</h3><span class="exec-model exec-sync">Synchronous</span> <span style="font-size:12px;color:var(--text-muted)">ONNX (0x0800), JQ (0x0803), SECP256R1 (0x0100)</span><br><span class="exec-model exec-spc">Short-running async</span> <span style="font-size:12px;color:var(--text-muted)">HTTP (0x0801), LLM (0x0802), DKMS (0x081B)</span><br><span class="exec-model exec-twophase">Long-running async</span> <span style="font-size:12px;color:var(--text-muted)">Long HTTP (0x0805), ZK (0x0806), Sovereign (0x080C), Image (0x0818), Audio (0x0819), Video (0x081A), Persistent (0x0820)</span>`,exec:''},
+    {name:"Deploy",addr:"",desc:"Chain config, Foundry/Hardhat setup, deployment scripts, system addresses",
+     detail:`<h3>What it teaches</h3><p>Chain ID 1979, RITUAL currency, EIP-1559 only. Complete Foundry and Hardhat configuration templates. System contract addresses. Deployment scripts with explorer verification. RPC endpoints for HTTP and WebSocket.</p>`,exec:''},
+    {name:"Design System",addr:"",desc:"Dark-mode-first terminal aesthetic, typography, color semantics, accessibility",
+     detail:`<h3>What it teaches</h3><p>The Ritual visual language: dark-mode-first terminal aesthetic. Fonts: Izoard (display), Barlow (body), JetBrains Mono (code). Color semantics: green = trust/success, pink = AI/compute, lime = data, gold = value. 9-state lifecycle UI components. WCAG 2.1 AA accessibility with focus-visible rings.</p>`,exec:''},
+  ],
+  "Precompile Features": [
+    {name:"HTTP",addr:"0x0801",desc:"External HTTP calls on-chain: APIs, price feeds, webhooks",
+     detail:`<h3>What it teaches</h3><p>The HTTP Call precompile. Short-running async model: result arrives in the same transaction via <code>spcCalls</code>.</p><span class="exec-model exec-spc">Short-running async: result in same TX</span><h3>Key patterns</h3><ul><li><code>SECRET</code> string replacement for API keys</li><li><code>piiEnabled</code> flag for secret string replacement and PII redaction</li><li>JQ post-processing via the JQ precompile (0x0803)</li><li>Method codes: GET=1, POST=2, PUT=3, DELETE=4, PATCH=5</li><li>One short-running async call per TX. Cannot chain with LLM in same TX</li></ul>`,exec:'spc'},
+    {name:"LLM",addr:"0x0802",desc:"On-chain AI inference: chat, tool calling, structured output, streaming",
+     detail:`<h3>What it teaches</h3><p>The LLM precompile. 30-field ABI input. OpenAI-compatible chat completions with tool/function calling and structured output (JSON mode).</p><span class="exec-model exec-spc">Short-running async: result in same TX</span><h3>Key patterns</h3><ul><li>SSE streaming via EIP-712 signed events</li><li>Temperature and topP scaled ×1000 (0.7 = 700)</li><li>Private LLM via ECIES encryption to executor</li><li>Model selection via TEEServiceRegistry capability query</li></ul>`,exec:'spc'},
+    {name:"Agents",addr:"0x0820 / 0x080C",desc:"Multi-step AI agents: persistent memory or sovereign execution",
+     detail:`<h3>What it teaches</h3><p>Two agent precompiles: Persistent Agent (0x0820) for stateful with memory, Sovereign Agent (0x080C) for autonomous execution.</p><span class="exec-model exec-twophase">Long-running async: callback delivery</span><h3>Key patterns</h3><ul><li>2-phase submit → callback with tools (web_search, code_execution)</li><li>Storage references for persistent state across sessions</li><li>Delivery config: target address + selector + gas limit</li></ul>`,exec:'twophase'},
+    {name:"Long-Running HTTP",addr:"0x0805",desc:"Minutes-to-hours async HTTP jobs with polling",
+     detail:`<h3>What it teaches</h3><p>The Long HTTP precompile for operations that take minutes to hours.</p><span class="exec-model exec-twophase">Long-running async: submit/poll/deliver</span><h3>Key patterns</h3><ul><li>Submit → poll → deliver with JQ extraction</li><li><code>pollIntervalBlocks</code> + <code>maxPollBlock</code> configuration</li><li><code>taskIdMarker</code> for result identification</li><li>Scheduler integration for recurring long jobs</li></ul>`,exec:'twophase'},
+    {name:"Multimodal",addr:"0x0818 / 0x0819 / 0x081A",desc:"AI image, audio, and video generation on-chain",
+     detail:`<h3>What it teaches</h3><p>Image (0x0818), Audio (0x0819), and Video (0x081A) precompiles.</p><span class="exec-model exec-twophase">Long-running async: callback delivery</span><h3>Key patterns</h3><ul><li>Encrypted storage credentials for S3/IPFS/Arweave</li><li>Output: URI + content hash</li><li>Executor Capability IDs: 7 (image), 8 (audio), 9 (video)</li></ul>`,exec:'twophase'},
+    {name:"Scheduler",addr:"0x56e7…D58B",desc:"Block-based delayed and recurring on-chain execution",
+     detail:`<h3>What it teaches</h3><p>How to use the Scheduler contract (<code>0x56e776BAE2DD60664b69Bd5F865F1180ffB7D58B</code>) to schedule delayed and recurring precompile calls on Ritual Chain. Execution is block-based, not time-based.</p><h3>Key patterns</h3><ul><li><code>setTimeout</code> / <code>setInterval</code> for Solidity: delayed and recurring on-chain calls</li><li>FSM: SCHEDULED → EXECUTING → COMPLETED/FAILED</li><li>Uses <code>TxScheduled</code> (type 0x10) system tx from sender <code>0x0000...00fa7e</code></li><li>Predicates for conditional execution (only run when a condition is true)</li><li>RitualWallet must be funded before each execution (just-in-time deposits supported)</li></ul>`,exec:''},
+    {name:"Secrets",addr:"",desc:"ECIES encryption, secret string replacement, delegated access control",
+     detail:`<h3>What it teaches</h3><p>Secret management for Ritual precompiles.</p><h3>Key patterns</h3><ul><li>ECIES encryption to executor public key</li><li><code>SECRET</code> string replacement in precompile inputs</li><li>Private outputs via <code>userPublicKey</code> field</li><li><a href="https://explorer.ritualfoundation.org/address/0xf9BF1BC8A3e79B9EBeD0fa2Db70D0513fecE32FD" target="_blank">SecretsAccessControl</a> for delegated access</li><li>Contract-owned vs EOA-owned secrets with different <code>msg.sender</code> rules</li></ul>`,exec:''},
+    {name:"X402 Payments",addr:"via 0x0801 / 0x0805",desc:"Micropayments for paid API access",
+     detail:`<h3>What it teaches</h3><p>X402 micropayment protocol for paid APIs via the HTTP and Long-Running HTTP precompiles.</p><h3>Key patterns</h3><ul><li>ECIES-encrypted payment credentials</li><li>Budget management per API call</li><li>Shared credential patterns</li><li>Flows through HTTP (0x0801) and Long-Running HTTP (0x0805), not a separate precompile</li></ul>`,exec:''},
+    {name:"Passkey / WebAuthn",addr:"",desc:"Sign transactions with Face ID, fingerprint, or hardware keys",
+     detail:`<h3>What it teaches</h3><p>Native passkey authentication on Ritual Chain using the TxPasskey transaction type (0x77). Users sign transactions with biometrics (Face ID, Touch ID, fingerprint sensors, or hardware security keys) instead of managing private keys.</p><h3>Key patterns</h3><ul><li>P-256 WebAuthn signature verification</li><li>Wallet-less onboarding: users create accounts with a fingerprint or face scan</li><li>Recovery patterns and dual-auth (passkey + traditional EOA)</li></ul>`,exec:''},
+  ],
+  "Smart Contracts": [
+    {name:"Contracts",addr:"",desc:"How to write Solidity contracts that call Ritual precompiles",
+     detail:`<h3>What it teaches</h3><p>How to write consumer contracts that correctly encode inputs, decode outputs, and handle results from every type of Ritual precompile.</p><h3>Key patterns</h3><ul><li>ABI encoding/decoding for precompile inputs and outputs</li><li>Short-running result decoding from <code>spcCalls</code> in the transaction receipt</li><li>Long-running callback handlers: implement <code>onResult(bytes32 jobId, bytes result)</code> for async delivery</li><li>Scheduled execution: recurring and delayed contract calls via the Scheduler</li><li>Fee deposits via <code>RitualWallet.deposit(lockDuration)</code> before submitting async calls</li><li>Job lifecycle events: track async and scheduled job state (committed, settled, delivered, expired)</li></ul>`,exec:''},
+    {name:"RitualWallet",addr:"",desc:"Fee deposits, locking, and withdrawal for async precompile calls",
+     detail:`<h3>What it teaches</h3><p>The RitualWallet fee management contract.</p><h3>Key patterns</h3><ul><li><code>deposit(lockDuration)</code> → funds locked until <code>block.number + lockDuration</code> → <code>withdraw(amount)</code> after lock expires</li><li>Lock duration is user-controlled (set at deposit time to cover your async TTL)</li><li>Lock is monotonic: new deposits only extend, never shorten the lock</li><li><code>depositFor(user, lockDuration)</code> to fund another address</li><li><strong>Must fund and lock BEFORE submitting async calls.</strong> Lock duration must cover the precompile TTL</li></ul>`,exec:''},
+  ],
+};
+
+// Render skills
+const container = document.getElementById('skills-container');
+if (container) {
+  for (const [group, skills] of Object.entries(SKILLS)) {
+    const div = document.createElement('div');
+    div.className = 'skill-group';
+    div.innerHTML = `<h3>${group}</h3><div class="skill-grid">${skills.map((s, i) => `
+      <div class="skill-card" onclick="openModal('${group}',${i})">
+        <div class="skill-header">
+          <span class="skill-name">${s.name}</span>
+          ${s.addr ? `<span class="skill-addr">${s.addr}</span>` : ''}
+        </div>
+        <div class="skill-desc">${s.desc}</div>
+        <span class="skill-arrow">→</span>
+      </div>
+    `).join('')}</div>`;
+    container.appendChild(div);
+  }
+}
+
+// Modal
+function openModal(group, idx) {
+  const skill = SKILLS[group][idx];
+  document.getElementById('modal-title').textContent = skill.name;
+  document.getElementById('modal-addr').textContent = skill.addr || '';
+  document.getElementById('modal-body').innerHTML = skill.detail;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Copy
+const platformCmds = {
+  claude: 'git clone https://github.com/ritual-foundation/ritual-dapp-skills.git .claude/skills/ritual-dapp-skills',
+  cursor: 'git clone https://github.com/ritual-foundation/ritual-dapp-skills.git .cursor/skills/ritual-dapp-skills',
+  codex: 'git clone https://github.com/ritual-foundation/ritual-dapp-skills.git .codex/skills/ritual-dapp-skills',
+  hermes: 'hermes skills tap add ritual-foundation/ritual-dapp-skills',
+  openclaw: 'git clone https://github.com/ritual-foundation/ritual-dapp-skills.git ~/.openclaw/skills/ritual-dapp-skills',
+};
+function setPlatform(btn, key) {
+  document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cmd = document.getElementById('install-cmd');
+  if (cmd) cmd.textContent = platformCmds[key];
+}
+
+function setIdea(text) {
+  if (window._stopIdeaCycleForGood) window._stopIdeaCycleForGood();
+  const el = document.getElementById('idea-text');
+  if (el) {
+    el.style.opacity = '1';
+    el.textContent = text;
+  }
+}
+
+function copyCode(blockId) {
+  const block = document.getElementById(blockId);
+  const clone = block.cloneNode(true);
+  const btnInClone = clone.querySelector('.copy-btn');
+  if (btnInClone) btnInClone.remove();
+  const text = clone.innerText.replace(/^\$\s*/, '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = block.querySelector('.copy-btn');
+    btn.classList.add('copied');
+    setTimeout(() => { btn.classList.remove('copied'); }, 1800);
+  });
+}
+</script>
+<!-- GSAP (animations only) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>
+var fpGo, exitSlideMode;
+
+(function() {
+  const slides = gsap.utils.toArray('.fp-slide');
+  const total = slides.length; // 4 slides: hero, step1, step2, step3
+  const fpWrapper = document.querySelector('.fp-wrapper');
+  const scrollContent = document.getElementById('scroll-content');
+  const counterCurrent = document.getElementById('fp-current');
+  const counterTotal = document.getElementById('fp-total');
+  counterTotal.textContent = String(total).padStart(2, '0');
+  let current = 0;
+  let locked = false;
+  let slideMode = true;
+  window.slideMode = true;
+
+  const progressEl = document.getElementById('fp-progress');
+  const progressFill = document.getElementById('fp-progress-fill');
+  function updateProgress(i) {
+    if (!progressFill) return;
+    const pct = Math.min(100, Math.max(0, ((i + 1) / total) * 100));
+    progressFill.style.width = pct + '%';
+  }
+  updateProgress(0);
+
+  function exitSlideMode() {
+    slideMode = false;
+    window.slideMode = false;
+    locked = true;
+
+    const pin = fpWrapper.querySelector('.fp-pin');
+    const counter = fpWrapper.querySelector('.fp-counter');
+
+    // Fade out the current slide gently
+    const currentSlide = slides[current];
+    gsap.to(currentSlide, {
+      opacity: 0, y: -30, filter: 'blur(6px)',
+      duration: 0.5, ease: 'power2.inOut',
+      onComplete: () => {
+        // Convert from fixed overlay to inline flow
+        fpWrapper.style.position = 'relative';
+        fpWrapper.style.zIndex = '10';
+        pin.style.height = 'auto';
+        pin.style.overflow = 'visible';
+        if (counter) counter.style.display = 'none';
+        const progress = document.getElementById('fp-progress');
+        if (progress) progress.classList.add('hidden');
+        const hint = document.getElementById('scroll-hint');
+        if (hint) hint.style.display = 'none';
+
+        slides.forEach(s => {
+          s.style.position = 'relative';
+          s.style.opacity = '1';
+          s.style.visibility = 'visible';
+          s.style.filter = 'none';
+          s.style.transform = 'none';
+          s.classList.add('active');
+        });
+
+        scrollContent.style.display = 'block';
+        // Lift the slide-mode height/overflow lock from html and body so the
+        // document can grow tall and window.scrollTo actually has somewhere
+        // to scroll to. Without this the document is clamped to 100vh and
+        // window.scrollTo becomes a no-op (page appears to "jump to top").
+        document.documentElement.style.height = 'auto';
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.height = 'auto';
+        document.body.style.overflow = 'auto';
+
+        // Land at the top of the last slide so that continuing to scroll
+        // smoothly reveals the rest of the page (Works with your tools,
+        // Skills, Architecture, Chain, Block Explorer).
+        const lastSlide = slides[total - 1];
+        // Read offsetTop AFTER the layout flips above so we get the post-
+        // reflow position, not the position from the previous fixed layout.
+        const targetY = lastSlide.offsetTop;
+        window.scrollTo({ top: targetY, behavior: 'instant' });
+
+        // Fade in the whole page from the scroll position
+        gsap.fromTo(document.body, 
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6, ease: 'power2.out', onComplete: () => { locked = false; } }
+        );
+      }
+    });
+  }
+
+  function go(index) {
+    if (!slideMode) return;
+    if (index === current || locked) return;
+
+    if (index >= total) {
+      exitSlideMode();
+      return;
+    }
+    if (index < 0) return;
+
+    locked = true;
+    const prev = current;
+    current = index;
+    const dir = index > prev ? 1 : -1;
+    const outSlide = slides[prev];
+    const inSlide = slides[index];
+
+    counterCurrent.textContent = String(index + 1).padStart(2, '0');
+    updateProgress(index);
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.inOut' },
+      onComplete: () => { setTimeout(() => { locked = false; }, 100); }
+    });
+
+    tl.to(outSlide, {
+      opacity: 0, y: -50 * dir, filter: 'blur(8px)', duration: 0.45,
+      onComplete: () => {
+        outSlide.classList.remove('active');
+        outSlide.style.opacity = '0';
+        outSlide.style.visibility = 'hidden';
+        gsap.set(outSlide, { y: 0, filter: 'none' });
+      }
+    });
+
+    inSlide.style.visibility = 'visible';
+    gsap.set(inSlide, { opacity: 0, y: 60 * dir, filter: 'blur(10px)' });
+    inSlide.classList.add('active');
+
+    tl.to(inSlide, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.6 }, '-=0.2');
+
+    const staggerEls = inSlide.querySelectorAll('.im-panel-inner > *');
+    if (staggerEls.length > 0) {
+      tl.from(staggerEls, {
+        y: 30, opacity: 0, filter: 'blur(5px)',
+        duration: 0.5, stagger: 0.05,
+        ease: 'power2.out', clearProps: 'filter',
+      }, '-=0.35');
+    }
+
+    if (index === 2 && window._startIdeaCycle) {
+      tl.add(() => { window._startIdeaCycle(); }, '-=0.1');
+    }
+    if (index === 3 && window._startAgentReplay) {
+      tl.add(() => { window._startAgentReplay(); }, '-=0.1');
+    }
+  }
+
+  fpGo = function(index) {
+    if (slideMode && index < total) {
+      go(index);
+    }
+  };
+  window.exitSlideMode = exitSlideMode;
+
+  // Wheel — only intercept in slide mode
+  document.addEventListener('wheel', (e) => {
+    if (!slideMode) return; // let browser handle normal scroll
+    e.preventDefault();
+    if (locked) return;
+    if (e.deltaY > 0) go(current + 1);
+    else if (e.deltaY < 0) go(current - 1);
+  }, { passive: false });
+
+  // Re-enter slide mode when scrolling back to top of normal content
+  window.addEventListener('scroll', () => {
+    if (slideMode) return;
+    if (window.scrollY === 0) {
+      // Don't auto-enter; wait for explicit upward scroll
+    }
+  });
+
+  // Touch
+  let touchStartY = 0;
+  document.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (!slideMode) return;
+    const delta = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(delta) < 40) return;
+    if (delta > 0) go(current + 1);
+    else go(current - 1);
+  }, { passive: true });
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (!slideMode) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); exitSlideMode(); }
+  });
+
+  // Idea cycler for slide 02 — 5 frames (default + 4 pills), 5s, hover pause, pill click stop
+  (function ideaCycler() {
+    const ideaText = document.getElementById('idea-text');
+    if (!ideaText) return;
+
+    const slide = ideaText.closest('.fp-slide');
+    const terminal = ideaText.closest('.im-terminal');
+    const pills = slide ? Array.from(slide.querySelectorAll('.idea-pill')) : [];
+
+    const examples = [
+      { text: ideaText.textContent, pillIndex: -1 },
+      ...pills.map((p, i) => ({ text: p.dataset.idea, pillIndex: i })),
+    ];
+
+    let current = 0;
+    let timer = null;
+    let paused = false;
+    let stopped = false;
+
+    function highlight(idx) {
+      pills.forEach((p, i) => p.classList.toggle('cycling', i === idx));
+    }
+
+    function show(idx) {
+      ideaText.style.opacity = '0';
+      setTimeout(() => {
+        if (stopped) { ideaText.style.opacity = '1'; return; }
+        ideaText.textContent = examples[idx].text;
+        highlight(examples[idx].pillIndex);
+        ideaText.style.opacity = '1';
+      }, 200);
+    }
+
+    function tick() {
+      if (stopped || paused) return;
+      current = (current + 1) % examples.length;
+      show(current);
+    }
+
+    function start() {
+      if (stopped || timer) return;
+      highlight(examples[current].pillIndex);
+      timer = setInterval(tick, 5000);
+    }
+
+    function stopForGood() {
+      stopped = true;
+      if (timer) { clearInterval(timer); timer = null; }
+      highlight(-1);
+    }
+
+    if (terminal) {
+      terminal.addEventListener('mouseenter', () => { paused = true; });
+      terminal.addEventListener('mouseleave', () => { paused = false; });
+    }
+
+    pills.forEach(p => p.addEventListener('click', stopForGood));
+
+    window._startIdeaCycle = start;
+    window._stopIdeaCycleForGood = stopForGood;
+  })();
+
+  // Agent terminal replay — streaming with thinking indicators
+  (function agentReplay() {
+    const el = document.getElementById('agent-replay');
+    if (!el) return;
+
+    const lines = [
+      { think: 400, text: 'Reading skills/ritual/SKILL.md...', color: '#f97316' },
+      { think: 300, text: 'Loaded bootstrap protocol. 10 rules active.', color: '#f97316' },
+      { think: 600, text: 'Analyzing: "autonomous agent indistinguishable from a human"', color: '#f97316' },
+      { think: 450, text: 'Mapping capabilities → precompiles...', color: '#f97316' },
+      { think: 200, text: '  Sovereign agent   → 0x080C (long-running async)', color: '#71717a' },
+      { think: 150, text: '  Read the news     → HTTP 0x0801 → Reuters, AP, Bloomberg', color: '#71717a' },
+      { think: 150, text: '  Post on Twitter   → HTTP 0x0801 → X API', color: '#71717a' },
+      { think: 150, text: '  Trade shitcoins   → HTTP 0x0801 → Hyperliquid API', color: '#71717a' },
+      { think: 150, text: '  Swipe on Tinder   → HTTP 0x0801 → ...good luck', color: '#71717a' },
+      { think: 150, text: '  Fee management    → RitualWallet deposit', color: '#71717a' },
+      { think: 250, text: 'Skills loaded: agents, http, secrets, scheduler, frontend, contracts, wallet, deploy', color: '#f97316' },
+      { break: true },
+      { think: 350, text: '■ Phase 1: Architecture', color: '#22c55e' },
+      { think: 250, text: '  Created  src/architecture.md', color: '#a1a1aa' },
+      { think: 200, text: '  Agent type: Sovereign (0x080C), autonomous execution', color: '#a1a1aa' },
+      { think: 200, text: '  Callback: onSovereignAgentResult(bytes32, bytes)', color: '#a1a1aa' },
+      { think: 300, text: '  ✓ Architecture locked in', color: '#22c55e' },
+      { break: true },
+      { think: 350, text: '■ Phase 2: Contracts', color: '#22c55e' },
+      { think: 400, text: '  Created  contracts/SovereignAgent.sol', color: '#a1a1aa' },
+      { think: 200, text: '  Created  contracts/AgentActions.sol', color: '#a1a1aa' },
+      { think: 200, text: '  Created  contracts/script/Deploy.s.sol', color: '#a1a1aa' },
+      { think: 500, text: '  Running  forge build...', color: '#71717a' },
+      { think: 250, text: '  ✓ Compiled. All callbacks wired.', color: '#22c55e' },
+      { break: true },
+      { think: 300, text: '■ Phase 3: Frontend', color: '#22c55e' },
+      { think: 250, text: '  Created  src/app/page.tsx', color: '#a1a1aa' },
+      { think: 200, text: '  Created  src/hooks/useAgentActions.ts', color: '#a1a1aa' },
+      { think: 200, text: '  Created  src/components/AgentFeed.tsx', color: '#a1a1aa' },
+      { think: 200, text: '  Created  src/components/ActionLog.tsx', color: '#a1a1aa' },
+      { think: 400, text: '  ✓ Built. It reads, thinks, and posts.', color: '#22c55e' },
+      { break: true },
+      { think: 350, text: '■ Phase 4: Deploy', color: '#22c55e' },
+      { think: 600, text: '  Deploying to Ritual Chain (ID: 1979)...', color: '#71717a' },
+      { think: 300, text: '  ✓ SovereignAgent: 0x7a3F...c91E', color: '#22c55e' },
+      { think: 200, text: '  ✓ AgentActions: 0x2eB1...4d8A', color: '#22c55e' },
+      { think: 200, text: '  ✓ Verified on explorer.ritualfoundation.org', color: '#22c55e' },
+      { break: true },
+      { think: 250, text: '■ Phase 5: Verification', color: '#22c55e' },
+      { think: 500, text: '  Running 12-step E2E journey...', color: '#71717a' },
+      { think: 200, text: '  Browsed Reuters. Swiped right. Left a Yelp review.', color: '#71717a' },
+      { think: 300, text: '  ✓ All 12 checks passed. Indistinguishable.', color: '#22c55e' },
+      { break: true },
+      { think: 200, text: '⚡ Done. Your sovereign agent is live on-chain.', color: '#f97316' },
+    ];
+
+    function streamText(span, text, charDelay) {
+      return new Promise(resolve => {
+        let ci = 0;
+        const iv = setInterval(() => {
+          if (ci >= text.length) { clearInterval(iv); resolve(); return; }
+          span.textContent += text[ci];
+          ci++;
+          el.scrollTop = el.scrollHeight;
+        }, charDelay);
+      });
+    }
+
+    function createSpinner() {
+      const s = document.createElement('span');
+      s.style.color = '#71717a';
+      s.style.marginRight = '6px';
+      s.textContent = '⠋';
+      const frames = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+      let fi = 0;
+      const iv = setInterval(() => { fi = (fi + 1) % frames.length; s.textContent = frames[fi]; }, 80);
+      return { el: s, stop: () => { clearInterval(iv); s.remove(); } };
+    }
+
+    function deleteText(span, charDelay) {
+      return new Promise(resolve => {
+        const iv = setInterval(() => {
+          if (span.textContent.length === 0) { clearInterval(iv); resolve(); return; }
+          span.textContent = span.textContent.slice(0, -1);
+        }, charDelay);
+      });
+    }
+
+    function createCursor() {
+      const c = document.createElement('span');
+      c.textContent = '█';
+      c.style.color = '#f97316';
+      c.style.animation = 'cursor-blink 1s step-end infinite';
+      return c;
+    }
+
+    if (!document.getElementById('cursor-blink-style')) {
+      const s = document.createElement('style');
+      s.id = 'cursor-blink-style';
+      s.textContent = '@keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }';
+      document.head.appendChild(s);
+    }
+
+    async function runReplay() {
+      el.innerHTML = '';
+
+      const teaserDiv = document.createElement('div');
+      teaserDiv.style.color = '#555';
+      teaserDiv.style.minHeight = '1.7em';
+      el.appendChild(teaserDiv);
+
+      const spinner = createSpinner();
+      teaserDiv.appendChild(spinner.el);
+      const teaserText = document.createElement('span');
+      teaserDiv.appendChild(teaserText);
+      const cursor = createCursor();
+      teaserDiv.appendChild(cursor);
+
+      // Type "jestermaxxing..."
+      await streamText(teaserText, 'jestermaxxing...', 9);
+      await new Promise(r => setTimeout(r, 600));
+      // Delete it
+      await deleteText(teaserText, 25);
+      await new Promise(r => setTimeout(r, 300));
+
+      // Remove teaser line, spinner, cursor
+      spinner.stop();
+      cursor.remove();
+      teaserDiv.remove();
+
+      for (const line of lines) {
+        if (line.break) {
+          el.appendChild(document.createElement('br'));
+          await new Promise(r => setTimeout(r, 100));
+          continue;
+        }
+        const div = document.createElement('div');
+        div.style.color = line.color;
+        div.style.minHeight = '1.7em';
+        el.appendChild(div);
+
+        const spinner = createSpinner();
+        div.appendChild(spinner.el);
+
+        await new Promise(r => setTimeout(r, line.think));
+
+        const span = document.createElement('span');
+        div.appendChild(span);
+        await streamText(span, line.text, 9);
+
+        spinner.stop();
+        await new Promise(r => setTimeout(r, 40));
+      }
+      await new Promise(r => setTimeout(r, 3000));
+      runReplay();
+    }
+    window._startAgentReplay = runReplay;
+  })();
+
+  // Nav links — once in normal scroll mode, just scroll to target
+  document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const hash = link.getAttribute('href').slice(1);
+      if (slideMode) {
+        if (hash === 'quickstart') { go(1); return; }
+        exitSlideMode();
+      }
+      const targetId = hash === 'quickstart' ? 'quickstart-step' : hash;
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    });
+  });
+
+})();
+</script>
+
+<script type="importmap">{"imports":{"three":"https://esm.sh/three@0.170.0"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+const container = document.getElementById('logo-3d');
+if (container) {
+  const S = 36;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+  camera.position.set(0, 0, 200);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(S, S);
+  renderer.setClearColor(0x000000, 0);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.8;
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xe8e8f0, 0.8));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
+  keyLight.position.set(5, 8, 6);
+  scene.add(keyLight);
+  for (const [c, i, p] of [[0x8866dd,0.4,[-6,3,4]],[0x66ddaa,0.3,[4,-3,-6]],[0xdd8866,0.25,[-3,-4,3]],[0x99bbff,0.6,[0,0,-8]]]) {
+    const l = new THREE.DirectionalLight(c, i); l.position.set(...p); scene.add(l);
+  }
+
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envScene = new THREE.Scene();
+  envScene.background = new THREE.Color(0x3a3a40);
+  envScene.add(new THREE.AmbientLight(0xf0f0f8, 0.4));
+  for (const [c, i, p] of [[0xffffff,0.8,[2,3,1]],[0x9988cc,0.2,[-2,1,2]],[0x88ccaa,0.15,[1,-2,-1]]]) {
+    const l = new THREE.DirectionalLight(c, i); l.position.set(...p); envScene.add(l);
+  }
+  scene.environment = pmrem.fromScene(envScene).texture;
+  pmrem.dispose();
+
+  const pathData = 'M30.4227 108.445L40.6803 98.1203L48.5666 106.058L30.0682 124.677L0.70482 95.1222L30.0678 65.5677L70.0435 105.804L62.1576 113.741L30.4227 81.7994L30.068 81.4424L29.7133 81.7994L16.827 94.7696L16.4768 95.122L16.827 95.4744L29.7133 108.445L30.068 108.802L30.4227 108.445ZM73.0227 22.3335L112.998 62.5693L105.112 70.5069L73.3773 38.5655L73.0226 38.2085L72.6679 38.5655L59.7815 51.5358L59.4314 51.8882L59.7815 52.2406L70.0437 62.5695L62.1578 70.5068L43.6594 51.888L73.0227 22.3335ZM76.0015 127.675L83.8871 119.738L115.622 151.68L115.977 152.037L116.331 151.68L129.218 138.709L129.568 138.357L129.218 138.005L118.956 127.676L126.842 119.738L145.341 138.356L115.977 167.911L76.0015 127.675ZM126.842 76.5037L158.577 108.445L158.932 108.802L159.287 108.445L172.173 95.4749L172.523 95.1225L172.173 94.7701L159.287 81.7999L158.932 81.4429L158.577 81.7999L148.32 92.1242L140.433 84.1866L158.932 65.5679L188.295 95.1223L158.932 124.677L118.956 84.441L126.842 76.5037ZM73.3773 151.679L83.6349 141.354L91.5211 149.292L73.0227 167.911L43.6594 138.356L83.6347 98.1201L91.521 106.058L59.7815 138.004L59.4314 138.356L59.7815 138.709L72.6679 151.679L73.0226 152.036L73.3773 151.679ZM105.368 92.12L97.4825 84.1828L129.222 52.2368L129.572 51.8844L129.222 51.5319L116.336 38.5617L115.981 38.2047L115.626 38.5617L105.369 48.8861L97.4826 40.9488L115.981 22.3297L145.344 51.8842L105.368 92.12ZM91.5208 62.8237L62.4101 92.1239L54.5242 84.1866L83.6349 54.8865L91.5208 62.8237ZM76.0017 84.4408L83.8876 76.5036L112.998 105.804L105.112 113.741L76.0017 84.4408ZM97.4786 127.421L126.589 98.1205L134.476 106.058L105.365 135.358L97.4786 127.421ZM94.669 30.6567L79.7922 15.683L94.669 0.709411L109.546 15.683L94.669 30.6567ZM94.6691 188.291L79.7923 173.317L94.6691 158.343L109.546 173.317L94.6691 188.291Z';
+  const centerX = 94.5, centerY = 94.5;
+  const logoGroup = new THREE.Group();
+  const material = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.8, roughness: 0.4, envMapIntensity: 1.0 });
+
+  for (const subpath of pathData.split(/(?=M)/).filter(s => s.trim())) {
+    const shape = new THREE.Shape();
+    const cmds = subpath.match(/[ML]\s*[0-9.]+\s+[0-9.]+/g) || [];
+    cmds.forEach((cmd, i) => {
+      const m = cmd.match(/([ML])\s*([0-9.]+)\s+([0-9.]+)/);
+      if (!m) return;
+      const x = parseFloat(m[2]) - centerX, y = -(parseFloat(m[3]) - centerY);
+      if (m[1] === 'M' || i === 0) shape.moveTo(x, y); else shape.lineTo(x, y);
+    });
+    shape.closePath();
+    logoGroup.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 8, bevelEnabled: true, bevelThickness: 1, bevelSize: 1, bevelSegments: 2 }), material));
+  }
+
+  const box = new THREE.Box3().setFromObject(logoGroup);
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  logoGroup.position.sub(center);
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const fitScale = 140 / maxDim;
+  logoGroup.scale.setScalar(fitScale);
+  scene.add(logoGroup);
+
+  const target = { y: 0 };
+  (function animate() {
+    requestAnimationFrame(animate);
+    target.y += 0.008;
+    logoGroup.rotation.y += (target.y - logoGroup.rotation.y) * 0.08;
+    renderer.render(scene, camera);
+  })();
+}
+</script>
+</body>
+</html>
