@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" fill="none">
+  <rect width="900" height="440" rx="12" fill="#0A0A0A"/>
+
+  <text x="450" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#555" letter-spacing="0.2em" font-weight="500">EXAMPLE WORKFLOW</text>
+
+  <!-- Participant labels -->
+  <text x="90" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#BFFF00" font-weight="600">Human</text>
+  <text x="270" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#FFF" font-weight="600">Front Door</text>
+  <text x="450" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#FF6600" font-weight="600">Bootstrap</text>
+  <text x="630" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#BFFF00" font-weight="600">Builder</text>
+  <text x="810" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#888" font-weight="600">Skills</text>
+
+  <!-- Lifelines -->
+  <line x1="90" y1="70" x2="90" y2="420" stroke="#333" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="270" y1="70" x2="270" y2="420" stroke="#333" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="450" y1="70" x2="450" y2="420" stroke="#333" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="630" y1="70" x2="630" y2="420" stroke="#333" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="810" y1="70" x2="810" y2="420" stroke="#333" stroke-width="1" stroke-dasharray="3,4"/>
+
+  <!-- Step 1: Human -> Front Door -->
+  <line x1="90" y1="95" x2="270" y2="95" stroke="#BFFF00" stroke-width="1.2"/>
+  <polygon points="266,91 274,95 266,99" fill="#BFFF00"/>
+  <rect x="100" y="80" width="160" height="16" rx="3" fill="#0A0A0A"/>
+  <text x="180" y="92" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#BFFF00">"Build me a chatbot that remembers..."</text>
+
+  <!-- Step 2: Front Door classifies -->
+  <rect x="240" y="105" width="60" height="20" rx="3" fill="#1A1A1A" stroke="#555" stroke-width="0.5"/>
+  <text x="270" y="118" text-anchor="middle" font-family="monospace" font-size="7" fill="#888">BUILD</text>
+
+  <!-- Step 3: Front Door -> Bootstrap -->
+  <line x1="270" y1="135" x2="450" y2="135" stroke="#FF6600" stroke-width="1"/>
+  <polygon points="446,131 454,135 446,139" fill="#FF6600"/>
+  <text x="360" y="130" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" fill="#FF6600">activate protocols</text>
+
+  <!-- Step 4: Bootstrap activates -->
+  <rect x="410" y="145" width="80" height="20" rx="3" fill="#1A0D00" stroke="#FF6600" stroke-width="0.5"/>
+  <text x="450" y="158" text-anchor="middle" font-family="monospace" font-size="7" fill="#FF6600">Rules 0-8</text>
+
+  <!-- Step 5: Front Door -> Builder -->
+  <line x1="270" y1="180" x2="630" y2="180" stroke="#BFFF00" stroke-width="1"/>
+  <polygon points="626,176 634,180 626,184" fill="#BFFF00"/>
+  <text x="450" y="175" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" fill="#666">route to builder</text>
+
+  <!-- Step 6: Builder -> Human (elicitation) -->
+  <line x1="630" y1="210" x2="90" y2="210" stroke="#BFFF00" stroke-width="1" opacity="0.7"/>
+  <polygon points="94,206 86,210 94,214" fill="#BFFF00" opacity="0.7"/>
+  <rect x="200" y="197" width="320" height="16" rx="3" fill="#0A0A0A"/>
+  <text x="360" y="209" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#BFFF00" opacity="0.8">"How should it remember? (A) Permanent  (B) Session  (C) Sliding"</text>
+
+  <!-- Step 7: Human -> Builder (answer) -->
+  <line x1="90" y1="235" x2="630" y2="235" stroke="#BFFF00" stroke-width="1" opacity="0.5"/>
+  <polygon points="626,231 634,235 626,239" fill="#BFFF00" opacity="0.5"/>
+  <text x="360" y="230" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#BFFF00" opacity="0.6">"A -> permanent"</text>
+
+  <!-- Step 8: Builder -> Skills (load) -->
+  <line x1="630" y1="260" x2="810" y2="260" stroke="#888" stroke-width="1"/>
+  <polygon points="806,256 814,260 806,264" fill="#888"/>
+  <text x="720" y="255" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" fill="#666">load skills</text>
+
+  <!-- Skills loaded -->
+  <rect x="740" y="270" width="140" height="44" rx="4" fill="#111" stroke="#2A4A2A" stroke-width="0.5"/>
+  <text x="810" y="285" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">overview · contracts</text>
+  <text x="810" y="296" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">agents · frontend</text>
+  <text x="810" y="307" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">design · wallet · deploy</text>
+
+  <!-- Builder phases -->
+  <rect x="590" y="325" width="80" height="16" rx="3" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+  <text x="630" y="336" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">Phase 1</text>
+  <text x="690" y="336" font-family="system-ui,sans-serif" font-size="7" fill="#555">Architecture</text>
+
+  <rect x="590" y="348" width="80" height="16" rx="3" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+  <text x="630" y="359" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">Phase 2</text>
+  <text x="690" y="359" font-family="system-ui,sans-serif" font-size="7" fill="#555">Smart contracts</text>
+
+  <rect x="590" y="371" width="80" height="16" rx="3" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+  <text x="630" y="382" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">Phase 3</text>
+  <text x="690" y="382" font-family="system-ui,sans-serif" font-size="7" fill="#555">Frontend + streaming</text>
+
+  <rect x="590" y="394" width="80" height="16" rx="3" fill="#0F1A0F" stroke="#2A4A2A" stroke-width="0.5"/>
+  <text x="630" y="405" text-anchor="middle" font-family="monospace" font-size="7" fill="#BFFF00" opacity="0.6">Phase 4</text>
+  <text x="690" y="405" font-family="system-ui,sans-serif" font-size="7" fill="#555">Integration + verify</text>
+
+  <!-- Final: Builder -> Human -->
+  <line x1="630" y1="420" x2="90" y2="420" stroke="#BFFF00" stroke-width="1.5"/>
+  <polygon points="94,416 86,420 94,424" fill="#BFFF00"/>
+  <text x="360" y="415" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#BFFF00">"Build complete. Here's your chatbot."</text>
+</svg>
