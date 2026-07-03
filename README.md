@@ -1,111 +1,63 @@
-# Sovereign Agent Example
+# On-Chain Reference Contracts
 
-End-to-end `0x080C` sovereign agent call in **direct precompile caller mode**.
+Production dApps deployed on Ritual Chain (Chain ID 1979). Use these as few-shot ICL patterns for precompile encoding, interface signatures, and feature composition.
 
-## Deployment Modes
+## Contract Registry
 
-This repo supports two sovereign deployment modes:
+The machine-readable registry lives at `examples/registry.json`. Current entries:
 
-1. **Direct precompile caller mode** (this example): a consumer contract calls `0x080C` directly.
-2. **Factory-backed harness mode** (recommended for production): deploy `SovereignAgentHarness` via `SovereignAgentFactory` (`0x9dC4C054e53bCc4Ce0A0Ff09E890A7a8e817f304`), then configure/fund/start the harness.
+| Contract | Address | Features |
+|----------|---------|----------|
+| TweetRegistry | `0x188c30510Ec32E6F00620b4f1c2E63925aA39ea2` | Scheduler, HTTP precompile, Secrets/Delegation |
+| TweetRentManager | `0xDb0f588a05F56aF801ED9e17241fa48706e8AE1f` | Scheduler, HTTP precompile, Secrets/Delegation, Contract-owned secrets |
 
-For the factory-backed flow, use the factory section in `skills/ritual-dapp-agents/SKILL.md`.
+## Pulling Contract Source
 
-The script:
-- deploys a minimal consumer contract
-- auto-funds `RitualWallet` if needed
-- discovers (or pins) an executor
-- ECIES-encrypts your secrets
-- submits Phase 1 via `cast send --async` (hash printed immediately)
-- polls and decodes Phase 2 callback delivery
-
-## Prerequisites
+Use the pull script to fetch source, bytecode, and function selectors:
 
 ```bash
-# Foundry
-curl -L https://foundry.paradigm.xyz | bash && foundryup
+# Pull all registry contracts
+python3 scripts/pull_contracts.py
 
-# uv (required - script uses `uv run --with ...`)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-uv --version
+# Pull a specific registry entry
+python3 scripts/pull_contracts.py --name TweetRegistry
+
+# Pull any address (ad-hoc, no registry entry needed)
+python3 scripts/pull_contracts.py --address 0x1234...
+
+# Pull + register for future use
+python3 scripts/pull_contracts.py --address 0x1234... --register MyContract --features Scheduler HTTP
+
+# Discover contracts deployed at a block
+python3 scripts/pull_contracts.py --block 2215742
 ```
 
-No `pip`/venv setup needed for this example. `run.sh` executes `helpers.py` via:
+Output per contract:
+- `source.sol` — Solidity source (from explorer API or GitHub)
+- `abi.json` — ABI (if verified on explorer)
+- `selectors.json` — 4-byte function selectors with resolved signatures
+- `bytecode.hex` — deployed bytecode
+- `interfaces/` — dependency interfaces (if available)
 
-```bash
-uv run --with eciespy --with eth-abi --with web3 python3 helpers.py ...
-```
+## Source Resolution Priority
 
-## Required Inputs
+1. **Explorer API** — `https://explorer.ritualfoundation.org/api/v2/smart-contracts/{address}` — best quality, includes ABI and compiler version
+2. **GitHub** — configured per contract in `registry.json` — fallback for unverified contracts
+3. **Bytecode analysis** — always available; extracts selectors and resolves via 4byte.directory
 
-`run.sh` fails fast with exit code `2` if any of these are unset or still
-contain an unfilled placeholder (`<…>`, `YOUR_…`). Set them before running:
+## What to Look For in Reference Contracts
 
-- `RPC_URL` — e.g. `https://rpc.ritualfoundation.org`
-- `PRIVATE_KEY` — 0x-prefixed key funded with native RITUAL for gas
-- `HF_TOKEN` — HuggingFace token (`hf_...`) with write access to `HF_REPO_ID`
-- `HF_REPO_ID` — HuggingFace dataset ID **you own**, in `user/repo` form (e.g.
-  `alice/my-agent-workspace`). Stores conversation history, artifacts, and
-  the system prompt. This is a per-run required input; there is no default.
-- `MODEL` — exact provider-routable model id
-- exactly one LLM key: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, or `OPENROUTER_API_KEY`
+- **Precompile encoding** — how call data is encoded for `0x0801` (HTTP), `0x0802` (LLM), etc.
+- **Callback handling** — how results are decoded and stored on delivery
+- **Feature composition** — how scheduler + secrets + HTTP work together in one contract
+- **Fee management** — how `RitualWallet.lockFee()` is called before async requests
+- **SPC patterns** — how state writes persist after SPC calls and in two-phase async submit functions
 
-> **For agents running this example on behalf of a user:** elicit
-> `HF_REPO_ID`, `HF_TOKEN`, `PRIVATE_KEY`, and the LLM credentials from the
-> user upfront. These are per-user secrets and per-user resources; the
-> example will not run without them.
+## Agent Deployment Modes In This Repo
 
-Example:
+- `examples/sovereign-agent/` and `examples/persistent-agent/` are **direct precompile caller mode** examples.
+- The **factory-backed harness/launcher mode** documentation lives in `skills/ritual-dapp-agents/SKILL.md`.
 
-```bash
-export RPC_URL="https://rpc.ritualfoundation.org"
-export PRIVATE_KEY="0x..."
-export ANTHROPIC_API_KEY="sk-ant-..."
-export MODEL="claude-sonnet-4-5-20250929"
-export HF_TOKEN="hf_..."
-export HF_REPO_ID="alice/my-agent-workspace"
-bash run.sh
-```
+## Authoritative Source Rule
 
-## Optional Overrides
-
-- `CLI_TYPE` (default `5`, Crush). Supported values: `0` (Claude Code), `5` (Crush), `6` (ZeroClaw)
-- `PROMPT` (default `"Say hello world"`)
-- `EXECUTOR_TEE_ADDRESS` (optional debug override; default flow discovers a live executor from `TEEServiceRegistry`)
-- `CONSUMER_ADDRESS` (reuse an already-deployed consumer contract)
-- `PHASE2_TIMEOUT`, `PHASE1_GAS_LIMIT`
-
-Example with explicit executor:
-
-```bash
-export EXECUTOR_TEE_ADDRESS="0x<tee-address-from-registry>"
-bash run.sh
-```
-
-## Provider Model Examples
-
-| Variable | Provider | Example Model |
-|----------|----------|---------------|
-| `ANTHROPIC_API_KEY` | Anthropic | `claude-sonnet-4-5-20250929` |
-| `OPENAI_API_KEY` | OpenAI | `gpt-4o-mini` |
-| `GEMINI_API_KEY` | Gemini | `gemini-2.5-flash` |
-| `OPENROUTER_API_KEY` | OpenRouter | `anthropic/claude-sonnet-4.5` |
-
-Before submission, run a provider-side model preflight check (model list/validation) and pass the exact routable model id in `MODEL`.
-
-`LLM_PROVIDER="ritual"` is sovereign-only at protocol level, but this example script currently supports Anthropic/OpenAI/Gemini/OpenRouter key flows only.
-
-## What Gets Verified
-
-1. Sender has no pending async job (`AsyncJobTracker`)
-2. Sender has enough locked `RitualWallet` balance (auto-deposit if needed)
-3. Phase 1 tx is mined
-4. Phase 2 callback is delivered and decoded from `SovereignAgentResultDelivered`
-
-## Files
-
-| File | Purpose |
-|------|---------|
-| `SovereignAgentConsumer.sol` | Minimal consumer contract with callback |
-| `run.sh` | One-shot orchestrator |
-| `helpers.py` | Request encoding, Phase 1 submission, Phase 2 polling |
+Deployed contracts are authoritative over skill descriptions. If a reference contract uses a different interface version or encoding layout than what a skill describes, follow the contract — it is the verified, working implementation on Ritual Chain.
