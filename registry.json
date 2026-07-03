@@ -1,0 +1,23 @@
+{
+  "chain_id": 1979,
+  "rpc_endpoints": [
+    "https://rpc.ritualfoundation.org"
+  ],
+  "explorer_api": "https://explorer.ritualfoundation.org/api/v2/smart-contracts",
+  "contracts": [
+    {
+      "name": "TweetRegistry",
+      "address": "0x188c30510Ec32E6F00620b4f1c2E63925aA39ea2",
+      "deploy_block": 2215742,
+      "features": ["Scheduler", "HTTP precompile", "Secrets/Delegation"],
+      "github": null
+    },
+    {
+      "name": "TweetRentManager",
+      "address": "0xDb0f588a05F56aF801ED9e17241fa48706e8AE1f",
+      "deploy_block": 2215742,
+      "features": ["Scheduler", "HTTP precompile", "Secrets/Delegation", "Contract-owned secrets"],
+      "github": null
+    }
+  ]
+}
