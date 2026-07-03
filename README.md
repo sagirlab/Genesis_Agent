@@ -35,8 +35,8 @@ python --version
 
 1. Clone the repository:
 ```bash
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-cd your-repo-name
+git clone [https://github.com/your-username/your-repo-name.git](https://github.com/sagirlab/Genesis_Agent.git)
+cd Genesis_Agent
 
 ```
 
@@ -78,9 +78,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📫 Contact
 
-Your Name - [@your_twitter](https://www.google.com/search?q=https://twitter.com/your_twitter) - email@example.com
+Your Name - [@0xApeGrandeur](https://www.google.com/search?q=https://twitter.com/your_twitter) - email@example.com
 
-Project Link: [https://github.com/your-username/your-repo-name](https://www.google.com/search?q=https://github.com/your-username/your-repo-name)
+Project Link: [https://github.com/sagirlab/Genesis_Agent](https://www.google.com/search?q=https://github.com/sagirlab/Genesis_Agent)
 
 ```
 
