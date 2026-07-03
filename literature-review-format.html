@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Literature Review Format Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Josefin+Sans:wght@300;400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1610;
+    --paper: #f7f3ec;
+    --cream: #ede8de;
+    --gold: #b8922a;
+    --gold-light: #d4aa4a;
+    --rust: #8b3a2a;
+    --sage: #4a6741;
+    --muted: #6b6255;
+    --border: #d4cfc4;
+    --section-bg: #f0ebe0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgba(184,146,42,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(139,58,42,0.04) 0%, transparent 50%);
+  }
+
+  /* ── PAPER TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 28px 0 24px;
+    margin-bottom: 56px;
+    text-align: center;
+    animation: fadeIn 0.8s ease both;
+  }
+
+  .masthead-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .masthead h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .masthead h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .masthead-sub {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+
+  .masthead-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 14px auto 0;
+  }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 52px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    animation: fadeIn 0.7s 0.1s ease both;
+  }
+
+  .intro-box .big-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: -8px;
+  }
+
+  .intro-box p {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: #d8d2c8;
+    padding-top: 4px;
+  }
+
+  .intro-box p strong { color: var(--gold-light); }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 44px;
+    animation: slideUp 0.6s ease both;
+    border-left: 3px solid transparent;
+    padding-left: 20px;
+    transition: border-color 0.3s;
+  }
+
+  .section:hover { border-color: var(--gold); }
+
+  .section:nth-child(1) { animation-delay: 0.15s; }
+  .section:nth-child(2) { animation-delay: 0.22s; }
+  .section:nth-child(3) { animation-delay: 0.29s; }
+  .section:nth-child(4) { animation-delay: 0.36s; }
+  .section:nth-child(5) { animation-delay: 0.43s; }
+  .section:nth-child(6) { animation-delay: 0.50s; }
+  .section:nth-child(7) { animation-delay: 0.57s; }
+  .section:nth-child(8) { animation-delay: 0.64s; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sec-num {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .word-count {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    background: var(--section-bg);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 2px;
+    margin-left: auto;
+  }
+
+  .sec-desc {
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 1.6;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+  }
+
+  /* Content blocks */
+  .content-block {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 20px 22px;
+    margin-bottom: 12px;
+  }
+
+  .content-block h4 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .content-block p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  .content-block p strong { color: var(--rust); }
+
+  /* Write list */
+  .write-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .write-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+
+  .write-list li::before {
+    content: '→';
+    color: var(--gold);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .write-list li strong { color: var(--rust); }
+
+  /* Example text */
+  .example-block {
+    background: linear-gradient(135deg, rgba(184,146,42,0.07), rgba(184,146,42,0.02));
+    border: 1px solid rgba(184,146,42,0.25);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    padding: 16px 18px;
+    margin-top: 12px;
+  }
+
+  .example-block .ex-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .example-block p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  /* Tip box */
+  .tip-box {
+    background: rgba(74,103,65,0.07);
+    border: 1px solid rgba(74,103,65,0.2);
+    border-left: 3px solid var(--sage);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-box .tip-icon { font-size: 15px; flex-shrink: 0; }
+
+  .tip-box p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--sage);
+    font-weight: 500;
+  }
+
+  /* Divider */
+  .ornament-divider {
+    text-align: center;
+    margin: 48px 0;
+    color: var(--gold);
+    font-size: 20px;
+    letter-spacing: 12px;
+    opacity: 0.5;
+  }
+
+  /* ── STRUCTURE OVERVIEW ── */
+  .structure-overview {
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 52px;
+    animation: fadeIn 0.7s 0.08s ease both;
+  }
+
+  .structure-overview h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 24px;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  .struct-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .struct-row:last-child { border-bottom: none; }
+
+  .struct-num {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  .struct-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #e8e2d8;
+    flex: 1;
+  }
+
+  .struct-wc {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #7a7468;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .struct-bar {
+    width: 80px;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .struct-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+  }
+
+  /* ── REFERENCES SECTION ── */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 560px) { .ref-grid { grid-template-columns: 1fr; } }
+
+  .ref-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 16px;
+  }
+
+  .ref-card h5 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .ref-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FINAL CHECKLIST ── */
+  .checklist {
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 32px;
+    margin-top: 52px;
+    animation: slideUp 0.6s 0.7s ease both;
+  }
+
+  .checklist h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .check-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    cursor: pointer;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-box {
+    width: 20px; height: 20px;
+    border: 1.5px solid rgba(184,146,42,0.4);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .check-box.checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .check-box.checked::after {
+    content: '✓';
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .check-label {
+    font-size: 14px;
+    color: #c8c2b8;
+    line-height: 1.6;
+    transition: color 0.2s;
+  }
+
+  .check-item.checked-item .check-label {
+    color: #7a7468;
+    text-decoration: line-through;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    z-index: 100;
+    transition: width 0.1s;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="masthead-label">Academic Writing Guide · Open Doors Scholarship</div>
+    <h1>How to Write a<br><em>Literature Review</em></h1>
+    <div class="masthead-sub">Microplastic Contamination in Food & Water — Nepal · General Medicine Track</div>
+    <div class="masthead-line"></div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro-box">
+    <div class="big-num">8</div>
+    <p>
+      A literature review has <strong>8 sections</strong>, each with a specific purpose. Follow this structure exactly — journals and reviewers expect it. Your total paper should be <strong>2,500–3,500 words</strong> excluding references. Write in clear, formal English. Every claim must be backed by a citation.
+    </p>
+  </div>
+
+  <!-- STRUCTURE OVERVIEW -->
+  <div class="structure-overview">
+    <h3>Paper Structure at a Glance</h3>
+    <div class="struct-row">
+      <span class="struct-num">1</span>
+      <span class="struct-name">Title</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:5%"></div></div>
+      <span class="struct-wc">1 line</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">2</span>
+      <span class="struct-name">Abstract</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:15%"></div></div>
+      <span class="struct-wc">200–250 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">3</span>
+      <span class="struct-name">Introduction</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:30%"></div></div>
+      <span class="struct-wc">400–500 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">4</span>
+      <span class="struct-name">Methods (Search Strategy)</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:15%"></div></div>
+      <span class="struct-wc">150–200 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">5</span>
+      <span class="struct-name">Sources & Pathways</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:50%"></div></div>
+      <span class="struct-wc">500–600 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">6</span>
+      <span class="struct-name">Health Effects</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:65%"></div></div>
+      <span class="struct-wc">600–700 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">7</span>
+      <span class="struct-name">Nepal-Specific Context</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:45%"></div></div>
+      <span class="struct-wc">400–500 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">8</span>
+      <span class="struct-name">Discussion & Conclusion</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:40%"></div></div>
+      <span class="struct-wc">400–500 words</span>
+    </div>
+    <div class="struct-row">
+      <span class="struct-num">9</span>
+      <span class="struct-name">References</span>
+      <div class="struct-bar"><div class="struct-bar-fill" style="width:100%"></div></div>
+      <span class="struct-wc">25–35 citations</span>
+    </div>
+  </div>
+
+  <div class="ornament-divider">✦ ✦ ✦</div>
+
+  <!-- SECTIONS -->
+  <div id="sections">
+
+    <!-- 1. TITLE -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 01</span>
+        <span class="sec-title">Title</span>
+        <span class="word-count">1 line</span>
+      </div>
+      <p class="sec-desc">The title is the first thing editors and reviewers read — make it specific, academic, and descriptive.</p>
+      <div class="content-block">
+        <h4>What to write</h4>
+        <ul class="write-list">
+          <li>State <strong>what</strong> you are studying (microplastic contamination)</li>
+          <li>State <strong>where</strong> (food and water sources)</li>
+          <li>State <strong>context</strong> (Nepal / public health)</li>
+          <li>Include the <strong>study type</strong> (literature review)</li>
+        </ul>
+        <div class="example-block">
+          <div class="ex-label">✦ Recommended Title</div>
+          <p>"Microplastic Contamination in Food and Water Sources of Nepal: A Literature Review and Public Health Risk Assessment"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ABSTRACT -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 02</span>
+        <span class="sec-title">Abstract</span>
+        <span class="word-count">200–250 words</span>
+      </div>
+      <p class="sec-desc">A self-contained summary of the entire paper. Write this LAST — after everything else is done.</p>
+      <div class="content-block">
+        <h4>4 paragraphs — one sentence each minimum</h4>
+        <ul class="write-list">
+          <li><strong>Background:</strong> Why microplastics are a global health concern</li>
+          <li><strong>Objective:</strong> What this review aims to examine</li>
+          <li><strong>Methods:</strong> How you searched for literature (PubMed, Google Scholar, keywords used)</li>
+          <li><strong>Findings:</strong> Main health risks identified</li>
+          <li><strong>Conclusion:</strong> What Nepal needs to do — research gaps and recommendations</li>
+        </ul>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <p>Write the abstract last. It is a summary — you cannot summarize what you haven't written yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. INTRODUCTION -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 03</span>
+        <span class="sec-title">Introduction</span>
+        <span class="word-count">400–500 words</span>
+      </div>
+      <p class="sec-desc">Hook the reader. Establish why this topic matters globally and specifically for Nepal.</p>
+      <div class="content-block">
+        <h4>Write in this exact order</h4>
+        <ul class="write-list">
+          <li><strong>Hook sentence:</strong> A striking global fact about plastic pollution or microplastics</li>
+          <li>Define microplastics — what they are, size classification (&lt;5mm), types (primary vs secondary)</li>
+          <li>Global scale — how widespread contamination is in food and water worldwide</li>
+          <li>Why Nepal is specifically vulnerable — geography, waste management, water sources</li>
+          <li>The research gap — very little Nepal-specific data exists</li>
+          <li>Purpose statement — what this review does and why it matters</li>
+        </ul>
+        <div class="example-block">
+          <div class="ex-label">✦ Example Hook</div>
+          <p>"Microplastics have been detected in every corner of the globe — from the deepest ocean trenches to Arctic snow — and emerging evidence now confirms their presence in the human food supply, raising urgent concerns for public health worldwide."</p>
+        </div>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <p>End the introduction with a clear purpose statement: "This review aims to synthesize existing literature on microplastic contamination in food and water, assess associated health risks, and highlight implications for Nepal."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. METHODS -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 04</span>
+        <span class="sec-title">Methods / Search Strategy</span>
+        <span class="word-count">150–200 words</span>
+      </div>
+      <p class="sec-desc">Explains HOW you found your sources. Short but essential — shows your review is systematic, not random.</p>
+      <div class="content-block">
+        <h4>What to include</h4>
+        <ul class="write-list">
+          <li>Databases searched: <strong>PubMed, Google Scholar, WHO reports, NHRC Nepal</strong></li>
+          <li>Keywords used: <strong>"microplastics", "food contamination", "drinking water", "human health", "South Asia", "Nepal"</strong></li>
+          <li>Date range of papers included (e.g. 2015–2025)</li>
+          <li>Language: English only</li>
+          <li>Inclusion criteria: peer-reviewed studies, WHO/UN reports</li>
+          <li>Exclusion criteria: non-English, opinion pieces without data</li>
+          <li>Total papers reviewed: state the number (aim for 30+)</li>
+        </ul>
+        <div class="example-block">
+          <div class="ex-label">✦ Example Sentence</div>
+          <p>"A systematic search was conducted across PubMed, Google Scholar, and WHO databases using the keywords 'microplastics', 'food contamination', 'drinking water safety', and 'public health Nepal', covering publications from 2015 to 2025."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. SOURCES -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 05</span>
+        <span class="sec-title">Sources & Pathways of Microplastics</span>
+        <span class="word-count">500–600 words</span>
+      </div>
+      <p class="sec-desc">Where do microplastics come from and how do they enter food and water? This is your environmental science section — where your co-author's PhD in Botany adds real value.</p>
+      <div class="content-block">
+        <h4>Cover these subsections</h4>
+        <ul class="write-list">
+          <li><strong>In drinking water:</strong> Rivers, groundwater, tap water, bottled water contamination studies</li>
+          <li><strong>In food:</strong> Seafood, salt, honey, packaged foods, agricultural soil contamination</li>
+          <li><strong>Atmospheric deposition:</strong> Microplastics in air settling onto crops and open water</li>
+          <li><strong>Plastic packaging:</strong> Migration from containers into food and beverages</li>
+          <li><strong>Nepal-specific sources:</strong> Fewa Lake, Bagmati River, poor waste management, plastic use in agriculture</li>
+        </ul>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <p>Mention Fewa Lake in Pokhara specifically — documented pollution + your local connection makes this section uniquely credible.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. HEALTH EFFECTS -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 06</span>
+        <span class="sec-title">Health Effects of Microplastic Exposure</span>
+        <span class="word-count">600–700 words</span>
+      </div>
+      <p class="sec-desc">This is your most important section as a medicine applicant. Go deep into the clinical and physiological impacts.</p>
+      <div class="content-block">
+        <h4>Cover each system with citations</h4>
+        <ul class="write-list">
+          <li><strong>Gastrointestinal effects:</strong> Gut microbiome disruption, intestinal inflammation, barrier dysfunction</li>
+          <li><strong>Endocrine disruption:</strong> Chemical leaching (BPA, phthalates) affecting hormones</li>
+          <li><strong>Immune system:</strong> Inflammatory response, oxidative stress, immune activation</li>
+          <li><strong>Cardiovascular:</strong> Microplastics detected in human blood and arterial plaques (cite recent 2023–24 studies)</li>
+          <li><strong>Carcinogenic potential:</strong> Association with colorectal cancer, emerging evidence</li>
+          <li><strong>Reproductive health:</strong> Effects on fertility — detected in placenta and breast milk</li>
+          <li><strong>Vulnerable populations:</strong> Children, pregnant women, elderly — higher risk</li>
+        </ul>
+        <div class="example-block">
+          <div class="ex-label">✦ Strong Opening Line for This Section</div>
+          <p>"Once ingested, microplastics and their associated chemical additives may exert toxic effects across multiple organ systems, with emerging clinical evidence linking chronic exposure to gastrointestinal inflammation, endocrine disruption, and cardiovascular pathology."</p>
+        </div>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <p>Search PubMed for "microplastics human blood 2023" and "microplastics placenta" — these are landmark recent papers that will make your review feel very current and credible.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. NEPAL CONTEXT -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 07</span>
+        <span class="sec-title">Nepal-Specific Context</span>
+        <span class="word-count">400–500 words</span>
+      </div>
+      <p class="sec-desc">This section is what makes your paper unique. No other review will have this — it's your original contribution.</p>
+      <div class="content-block">
+        <h4>What to write here</h4>
+        <ul class="write-list">
+          <li><strong>Plastic waste situation:</strong> Nepal generates significant plastic waste with limited recycling infrastructure</li>
+          <li><strong>Water sources at risk:</strong> Fewa Lake (Pokhara), Bagmati River, glacial meltwater — all documented for pollution</li>
+          <li><strong>Food safety gaps:</strong> Street food culture, open-air markets, plastic packaging of staple foods</li>
+          <li><strong>Healthcare readiness:</strong> Nepal lacks systematic microplastic monitoring or policy framework</li>
+          <li><strong>Research gap:</strong> Clearly state — very few Nepal-specific microplastic studies exist. This is the gap your paper addresses.</li>
+          <li><strong>Policy context:</strong> Nepal's plastic ban attempts and their limitations</li>
+        </ul>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <p>Even if you cannot find many Nepal-specific papers, that IS your finding — the absence of data is itself a research gap worth documenting.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. DISCUSSION -->
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-num">Section 08</span>
+        <span class="sec-title">Discussion & Conclusion</span>
+        <span class="word-count">400–500 words</span>
+      </div>
+      <p class="sec-desc">Synthesize everything. What does it all mean? What should Nepal do? End strong.</p>
+      <div class="content-block">
+        <h4>Discussion — write in this flow</h4>
+        <ul class="write-list">
+          <li>Summarize the key findings from your review — don't repeat, <strong>synthesize</strong></li>
+          <li>Discuss the <strong>limitations</strong> of existing studies (small sample sizes, lab conditions vs real-world, Nepal data gaps)</li>
+          <li>Discuss what <strong>this means for Nepal's public health</strong> — who is most at risk, what diseases could increase</li>
+          <li>Policy recommendations — what Nepal's government and health sector should do</li>
+        </ul>
+        <div class="content-block" style="margin-top:12px; background: var(--section-bg);">
+          <h4>Conclusion — 1 strong paragraph</h4>
+          <ul class="write-list">
+            <li>Restate the severity of microplastic contamination as a public health issue</li>
+            <li>Emphasize the <strong>critical need for Nepal-specific research</strong></li>
+            <li>Call for national monitoring systems, policy action, and public health awareness</li>
+            <li>End with a forward-looking sentence about the future of this research</li>
+          </ul>
+        </div>
+        <div class="example-block">
+          <div class="ex-label">✦ Example Closing Sentence</div>
+          <p>"As the global burden of microplastic contamination continues to grow, Nepal must urgently invest in national surveillance, evidence-based policy, and interdisciplinary research to protect the health of its population from this emerging environmental threat."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ornament-divider">✦ ✦ ✦</div>
+
+  <!-- REFERENCES -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sec-num">Section 09</span>
+      <span class="sec-title">References</span>
+      <span class="word-count">25–35 citations</span>
+    </div>
+    <p class="sec-desc">Use Vancouver style — the standard for medical journals. Number citations in order of appearance in the text.</p>
+    <div class="ref-grid">
+      <div class="ref-card">
+        <h5>Vancouver Format</h5>
+        <p>Author AB, Author CD. Title of article. Journal Name. Year;Volume(Issue):Pages.</p>
+      </div>
+      <div class="ref-card">
+        <h5>Example</h5>
+        <p>Smith J, Patel R. Microplastics in drinking water. Environ Health. 2022;21(3):45–52.</p>
+      </div>
+      <div class="ref-card">
+        <h5>Where to Find Sources</h5>
+        <p>PubMed · Google Scholar · WHO reports · NHRC Nepal · Lancet · Nature</p>
+      </div>
+      <div class="ref-card">
+        <h5>Pro Tip</h5>
+        <p>Use <strong>Zotero</strong> (free app) to manage references automatically — saves hours of formatting work.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ornament-divider">✦ ✦ ✦</div>
+
+  <!-- ET AL SECTION -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sec-num">Must Know 01</span>
+      <span class="sec-title">What is "et al." ?</span>
+    </div>
+    <p class="sec-desc">You will use this constantly while writing. Understand it perfectly.</p>
+    <div class="content-block">
+      <h4>Definition</h4>
+      <p><strong>"et al."</strong> is Latin for <strong>"and others."</strong> When a research paper has 3 or more authors, you only write the first author's last name and add "et al." instead of listing everyone.</p>
+    </div>
+    <div class="content-block">
+      <h4>When to use it</h4>
+      <ul class="write-list">
+        <li><strong>1 author:</strong> Smith (2020)</li>
+        <li><strong>2 authors:</strong> Smith and Jones (2020)</li>
+        <li><strong>3 or more authors:</strong> Smith et al. (2020) ← use et al.</li>
+      </ul>
+    </div>
+    <div class="content-block">
+      <h4>In text vs In reference list</h4>
+      <ul class="write-list">
+        <li><strong>In your text:</strong> Deng et al. (2020) reported oxidative stress following microplastic exposure.</li>
+        <li><strong>In your reference list:</strong> Write ALL authors in full — Deng Y, Wang L, Zhang B, Chen W. Title. Journal. 2020;18(2):112–119.</li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <p>et al. is only a shortcut for in-text citations. Your reference list at the end must always have every author's full name.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MINIMUM SOURCES -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sec-num">Must Know 02</span>
+      <span class="sec-title">Minimum Sources Required</span>
+    </div>
+    <p class="sec-desc">How many references do you actually need?</p>
+    <div class="content-block">
+      <h4>Source count guide</h4>
+      <ul class="write-list">
+        <li><strong>Absolute minimum:</strong> 20 sources — below this looks weak</li>
+        <li><strong>Recommended:</strong> 25–30 sources — solid and credible</li>
+        <li><strong>Sweet spot for you:</strong> 28 sources — thorough without being overwhelming for a student paper</li>
+      </ul>
+    </div>
+    <div class="content-block">
+      <h4>Where to find your 28 sources</h4>
+      <ul class="write-list">
+        <li><strong>PubMed</strong> — pubmed.ncbi.nlm.nih.gov — most credible medical database</li>
+        <li><strong>Google Scholar</strong> — scholar.google.com — broad academic search</li>
+        <li><strong>WHO reports</strong> — who.int — international health authority</li>
+        <li><strong>NHRC Nepal</strong> — nhrc.gov.np — Nepal-specific health data</li>
+        <li><strong>Lancet / Nature / BMJ</strong> — top tier journals, very credible</li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <p>Use <strong>Zotero</strong> (free app) to collect and format all references automatically. It saves hours of manual work.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMPLE PARAGRAPH -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sec-num">Must Know 03</span>
+      <span class="sec-title">What a Real Paragraph Looks Like</span>
+    </div>
+    <p class="sec-desc">This is exactly how every paragraph in your paper should be structured. Study this carefully.</p>
+    <div class="content-block">
+      <h4>Sample paragraph — Health Effects section</h4>
+      <div class="example-block" style="margin-top:0;">
+        <div class="ex-label">✦ Sample Paragraph</div>
+        <p>Several studies have demonstrated that microplastic ingestion poses significant risks to the human gastrointestinal system. Lu et al. (2018) found that polystyrene microplastics caused intestinal inflammation and disrupted gut microbiome diversity in animal models. Similarly, Deng et al. (2020) reported oxidative stress and metabolic disturbances following chronic microplastic exposure. More recently, Leslie et al. (2022) made the landmark discovery of microplastic particles in human blood samples, suggesting systemic circulation beyond the gut. Collectively, these findings indicate that microplastic exposure may contribute to chronic inflammatory conditions, with implications for colorectal health and beyond.</p>
+      </div>
+    </div>
+    <div class="content-block">
+      <h4>What happened in that paragraph — breakdown</h4>
+      <ul class="write-list">
+        <li><strong>Sentence 1:</strong> Your own opening claim — what this paragraph is about</li>
+        <li><strong>Sentence 2:</strong> Lu et al. finding — summarized in your own words + cited</li>
+        <li><strong>Sentence 3:</strong> Deng et al. finding — linked with "Similarly"</li>
+        <li><strong>Sentence 4:</strong> Leslie et al. finding — linked with "More recently"</li>
+        <li><strong>Sentence 5:</strong> YOUR synthesis — "Collectively these findings indicate..." — this is your original contribution</li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <p>Every paragraph = opening claim + 2–3 cited studies + your own synthesis sentence. That last sentence is what shows your intelligence as a reviewer.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKING WORDS -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sec-num">Must Know 04</span>
+      <span class="sec-title">Linking Words to Use</span>
+    </div>
+    <p class="sec-desc">These words connect your paragraphs and studies smoothly. Use them constantly — they make your writing flow like a real academic paper.</p>
+    <div class="ref-grid">
+      <div class="ref-card">
+        <h5>To Add Similar Findings</h5>
+        <p>Similarly · Furthermore · In addition · Consistently · Likewise · Also · Moreover</p>
+      </div>
+      <div class="ref-card">
+        <h5>To Show Contrast</h5>
+        <p>However · In contrast · Despite this · Nevertheless · On the other hand · Conversely</p>
+      </div>
+      <div class="ref-card">
+        <h5>To Conclude / Synthesize</h5>
+        <p>Collectively · Overall · Taken together · These findings suggest · In summary · Thus · Therefore</p>
+      </div>
+      <div class="ref-card">
+        <h5>To Show Time / Sequence</h5>
+        <p>More recently · Subsequently · Earlier studies · Building on this · Following this</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI USAGE -->
+  <div class="section">
+    <div class="section-head">
+      <span class="sec-num">Must Know 05</span>
+      <span class="sec-title">How Much AI Can You Use?</span>
+    </div>
+    <p class="sec-desc">Critical to understand — using AI wrong can get your paper rejected by the journal entirely.</p>
+    <div class="content-block">
+      <h4>The golden rule</h4>
+      <p><strong>You write every sentence. AI only polishes.</strong> Journals including JNMA now use AI detection tools. A fully AI-written paper gets desk rejected immediately — never even reviewed.</p>
+    </div>
+    <div class="content-block">
+      <h4>What AI is allowed for</h4>
+      <ul class="write-list">
+        <li>✅ <strong>Finding paper ideas and structure</strong> — fine</li>
+        <li>✅ <strong>Explaining complex medical terms to you</strong> — fine</li>
+        <li>✅ <strong>Checking your grammar after YOU write</strong> — fine</li>
+        <li>✅ <strong>Paraphrasing one sentence you already wrote</strong> — carefully</li>
+        <li>❌ <strong>Writing full paragraphs for you</strong> — not allowed</li>
+        <li>❌ <strong>Writing entire sections</strong> — not allowed</li>
+        <li>❌ <strong>Generating citations</strong> — never, always verify manually on PubMed</li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <p>Your authentic student voice + real research = credible paper. A slightly imperfect but genuine paper beats perfectly polished AI text every time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ornament-divider">✦ ✦ ✦</div>
+
+  <!-- CHECKLIST -->
+  <div class="checklist">
+    <h3>✦ Before You Submit — Checklist</h3>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Title is specific, descriptive, and includes "literature review"</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Abstract written last — covers background, methods, findings, conclusion</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Introduction ends with a clear purpose statement</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Methods section lists databases, keywords, date range, inclusion/exclusion criteria</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Health effects section covers at least 4 body systems with citations</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Nepal-specific context section includes Fewa Lake / local data</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Discussion identifies research gaps and gives policy recommendations</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Minimum 25 references in Vancouver format</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Total word count is between 2,500–3,500 words</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Co-author (Biology PhD teacher) has reviewed and approved the paper</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span class="check-label">Submitted to target journal — JNMA or Nepal Medical College Journal</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+  });
+
+  // Checklist toggle
+  function toggleCheck(item) {
+    const box = item.querySelector('.check-box');
+    box.classList.toggle('checked');
+    item.classList.toggle('checked-item');
+  }
+</script>
+</body>
+</html>
